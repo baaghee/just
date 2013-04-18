@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	div#main-container.container
+		div.span7.white
+			form#top
+				div#main-input.just-form
+					textarea#input(rows='3')
+				div#image-input.just-form.hide
+					textarea#top-input(rows='2', placeholder='top text')
+					textarea#bot-input(rows='2', placeholder='bottom text')
+					div.fileupload.fileupload-new(data-provides='fileupload')
+						span.btn.btn-file
+							span.fileupload-new Select file
+							span.fileupload-exists Change
+							input(type='file')#file
+						span.fileupload-preview
+						a.close.fileupload-exists(href='#', data-dismiss='fileupload', style='float: none;') ×
+				div#post-btns.pull-right
+					span#colorpicker.btn
+						i.icon-ok
+					a#photo.btn(href='#')
+						i.icon-picture
+					input#submit.btn.btn-primary(type='submit', value='Post')
+				br.clear
+			canvas#preview.span6.just(width='480', height='322')
+			div.row
+				div#container.span7
+					h2 Posts
+					div#posts
+		div.span4.white
+
