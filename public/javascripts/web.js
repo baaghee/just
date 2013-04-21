@@ -57,8 +57,8 @@
 				  strokeWidth: 2,
 				  x: 220, y: 150,
 				  align: "center",
-				  font: "50px Verdana, sans-serif",
-				  maxWidth: 300,
+				  font: "30px 'Merriweather Sans', sans-serif",
+				  maxWidth: 500,
 				  text: text
 				});
 			}else if(type=='image'){
@@ -75,7 +75,7 @@
 		          strokeWidth: 1,
 		          x: 220, y: 300,
 		          align: "center",
-		          font: "bold 50px Verdana, sans-serif",
+		          font: "bold 40px Verdana, sans-serif",
 		          maxWidth: 500,
 		          text: $("#bot-input").val()
 		        });
@@ -85,7 +85,7 @@
 		          strokeWidth: 1,
 		          x: 220, y: 50,
 		          align: "center",
-		          font: "bold 50px Verdana, sans-serif",
+		          font: "bold 40px Verdana, sans-serif",
 		          maxWidth: 500,
 		          text: $("#top-input").val()
 		        });
