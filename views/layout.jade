@@ -36,9 +36,13 @@ html(lang='en')
 					a.brand(href='./index.html') Just Because I am
 					div.nav-collapse.collapse
 						ul.nav
-							li.active
-								a(href='./index.html') Login with facebook
-							li
-								a(href='./getting-started.html') Login with twitter
-
+							-if(locals.session.user){
+								li
+									img(src="http://graph.facebook.com/"+locals.session.user.username+"/picture")
+								li.active
+									span=locals.session.user.screen_name
+							-}else{
+								li.active
+									a(href='./index.html') Login with facebook
+							-}
 		block content
