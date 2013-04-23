@@ -43,6 +43,6 @@ html(lang='en')
 									span=locals.session.user.screen_name
 							-}else{
 								li.active
-									a(href='./index.html') Login with facebook
+									a(href='/auth/facebook') Login with facebook
 							-}
 		block content
