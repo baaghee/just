@@ -162,6 +162,17 @@ app.get('/', function(req,res){
 		res.render('index',{latest:latest});
 	});
 });
+app.get('/:user/:pic', function(req,res){
+	//find latest posts
+	var id = req.params.pic;
+	Pic
+	.findOne({_id:id})
+	.populate('user', "id screen_name username")
+	.exec(function(err, pic){
+		if(err) throw err;
+		res.render('display', {pic:pic});
+	});
+});
 app.post('/pic', Authenticate, function(req, res){
 	var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
 	var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
@@ -184,7 +195,6 @@ app.post('/pic', Authenticate, function(req, res){
 			Pic
 			.findOne({_id:doc._id})
 			.populate('user', "id screen_name username")
-			.sort({_id:-1})
 			.exec(function(err, pic){
 				if(err) throw err;
 				res.json(pic);

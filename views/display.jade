@@ -1,0 +1,59 @@
+extends layout
+
+block content
+	div.row
+		div.span9
+			section#next-menu.row.btn-group
+				div.span4#previous-btn
+					a.btn.btn-medium.btn-block(href='Previous')
+						i.icon-chevron-left
+				div.span4
+					a.btn.btn-medium.btn-block(href='Previous')
+						i.icon-chevron-right
+			section.row
+				div.big-post
+					div.post-head
+						img(src="http://graph.facebook.com/"+pic.user.username+"/picture")
+						a(href='#')=pic.username
+						span.date 2 July 2013
+						br.clear
+					div.post-like-menu
+						span.top-block-likes
+							strong(class="like_" + pic._id)=pic.likes
+							a.btn.btn-small.approve(data-id=pic._id, data-data='like')
+								i.icon-thumbs-up 
+						span.top-block-dislikes
+							strong(class="dislike_" + pic._id)=pic.dislikes
+							a.btn.btn-small.approve(data-id=pic._id, data-data='dislike')
+								i.icon-thumbs-down
+					img(src="/files/" + pic.pic)
+					div.post-footer
+						div.pull-left
+							a.btn.btn-small(href='#')
+								strong 20
+								| Comments
+						div.pull-right.btn-group
+							a.btn.btn-small(href='#') FB
+							a.btn.btn-small(href='#') Twitter
+							a.btn.btn-small(href='#') Pinterest
+							a.btn.btn-small(href='#') Tumblr
+							a.btn.btn-small(href='#') G+
+						br.clear
+					div
+						h4 Comments
+						#disqus_thread
+							script(type='text/javascript')
+									var disqus_shortname = 'anymeme'; // required: replace example with your forum shortname
+									(function() {
+									var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+									dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+									(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+									})();
+							noscript
+								| Please enable JavaScript to view the
+								a(href='http://disqus.com/?ref_noscript') comments powered by Disqus.
+							a.dsq-brlink(href='http://disqus.com')
+								| comments powered by
+								span.logo-disqus Disqus
+		div.span2
+			| Advertisement

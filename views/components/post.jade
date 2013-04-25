@@ -13,7 +13,8 @@
 			strong(class="dislike_" + post._id)=post.dislikes
 			a.btn.btn-small.approve(data-id=post._id, data-data='dislike')
 				i.icon-thumbs-down
-	img(src="/files/" + post.pic)
+	a(href='/' + post.user.screen_name + '/' + post._id)
+		img(src="/files/" + post.pic)
 	.post-footer
 		.pull-left
 			a.btn.btn-small(href='#')
