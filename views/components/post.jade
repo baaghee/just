@@ -1,28 +1,29 @@
-div.post()
-    div.post-top.span7
-        div.post-user
-          img(src='https://lh3.googleusercontent.com/-Unm6LLB-008/AAAAAAAAAAI/AAAAAAAAAAA/Eu_6K6ni5uQ/s32-c-k-no/photo.jpg')
-          a(href='#') Username
-          br
-          small 2 July 2013
-        div.like-btns.btn-group
-          a.btn(href='#')
-            i.icon-thumbs-up
-          a.btn(href='#')
-            i.icon-thumbs-down
-      img(src=image)
-      div.span7.post-bottom
-        div.social-btns.btn-group
-          a.btn(href='#')
-            i.icon-facebook-sign
-          a.btn(href='#')
-            i.icon-twitter
-          a.btn(href='#')
-            i.icon-pinterest
-        div.stat-btns
-          ul.unstyled
-            li 23 Comments
-            li 23 Likes
-            li 23 Dislikes
-      br.clear
+.post
+	.post-head
+		img(src="http://graph.facebook.com/"+post.user.username+"/picture")
+		a(href='#')=post.user.screen_name
+		span.date 2 July 2013
+		br.clear
+	.post-like-menu
+		span.top-block-likes
+			strong(class="like_" + post._id)=post.likes
+			a.btn.btn-small.approve(data-id=post._id, data-data='like')
+				i.icon-thumbs-up 
+		span.top-block-dislikes
+			strong(class="dislike_" + post._id)=post.dislikes
+			a.btn.btn-small.approve(data-id=post._id, data-data='dislike')
+				i.icon-thumbs-down
+	img(src="/files/" + post.pic)
+	.post-footer
+		.pull-left
+			a.btn.btn-small(href='#')
+				strong 20
+				| Comments
+		.pull-right.btn-group
+			a.btn.btn-small(href='#') FB
+			a.btn.btn-small(href='#') Twitter
+			a.btn.btn-small(href='#') Pinterest
+			a.btn.btn-small(href='#') Tumblr
+			a.btn.btn-small(href='#') G+
+		br.clear
 

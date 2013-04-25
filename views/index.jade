@@ -1,32 +1,286 @@
 extends layout
 
 block content
-	div#main-container.container
-		div.span7.white
-			form#top
-				div#main-input.just-form
-					textarea#input(rows='3')
-				div#image-input.just-form.hide
-					textarea#top-input(rows='2', placeholder='top text')
-					textarea#bot-input(rows='2', placeholder='bottom text')
-					div.fileupload.fileupload-new(data-provides='fileupload')
-						span.btn.btn-file
-							span.fileupload-new Select file
-							span.fileupload-exists Change
-							input(type='file')#file
-						span.fileupload-preview
-						a.close.fileupload-exists(href='#', data-dismiss='fileupload', style='float: none;') ×
-				div#post-btns.pull-right
-					span#colorpicker.btn
-						i.icon-ok
-					a#photo.btn(href='#')
-						i.icon-picture
-					input#submit.btn.btn-primary(type='submit', value='Post')
-				br.clear
-			canvas#preview.span6.just(width='480', height='322')
-			div.row
-				div#container.span7
-					h2 Posts
-					div#posts
-		div.span4.white
+	//
+		div#main-container.container
+			div.span7.white
+				form#top
+					div#main-input.just-form
+						textarea#input(rows='3')
+					div#image-input.just-form.hide
+						textarea#top-input(rows='2', placeholder='top text')
+						textarea#bot-input(rows='2', placeholder='bottom text')
+						div.fileupload.fileupload-new(data-provides='fileupload')
+							span.btn.btn-file
+								span.fileupload-new Select file
+								span.fileupload-exists Change
+								input(type='file')#file
+							span.fileupload-preview
+							a.close.fileupload-exists(href='#', data-dismiss='fileupload', style='float: none;') ×
+					div#post-btns.pull-right
+						span#colorpicker.btn
+							i.icon-ok
+						a#photo.btn(href='#')
+							i.icon-picture
+						input#submit.btn.btn-primary(type='submit', value='Post')
+					br.clear
+				canvas#preview.span6.just(width='480', height='322')
+				div.row
+					div#container.span7
+						h2 Posts
+						div#posts
+			div.span4.white
+	#anymeme.alert
+		button.close(type='button', data-dismiss='alert') ×
+		h3 Your ideas and inspiration in one place
+		p
+			| With Anymeme you can share notes, articles, quotes, images, memes and much more. Your collections can be private or public.
+	.row
+		.span8
+			header#sub-header.navbar
+				nav.navbar-inner
+					.container
+						form#post-form.form-search.pull-right
+							#any-textarea
+								textarea#input(rows='3', placeholder='Type to generate image')
+							#meme-textarea
+								textarea(rows='1', placeholder='Top text')
+								textarea(rows='1', placeholder='Bottom text')
+							#text-menu.pull-left
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Choose Font')
+										i.icon-font
+										span.caret
+									ul.dropdown-menu
+										li
+											a(role='menuitem', tabindex='-1') Font A
+										li
+											a(role='menuitem', tabindex='-1') Font B
+										li
+											a(role='menuitem', tabindex='-1') Font C
+										li
+											a(role='menuitem', tabindex='-1') Font D
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Weight')
+										i.icon-bold
+										span.caret
+									ul.dropdown-menu
+										li
+											a(role='menuitem', tabindex='-1')
+												span.normal Normal
+										li
+											a(role='menuitem', tabindex='-1')
+												span.bold Bold
+										li
+											a(role='menuitem', tabindex='-1')
+												span.italic Italic
+										li
+											a(role='menuitem', tabindex='-1')
+												span.underlined Underlined
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Size')
+										i.icon-text-width
+										span.caret
+									ul.dropdown-menu.change-canvas-attribute(data-role='size')
+										li(data-attribute='14px')
+											a(role='menuitem', tabindex='-1')
+												span.font-small Small
+										li(data-attribute='18px')
+											a(role='menuitem', tabindex='-1')
+												span.font-normal Normal
+										li(data-attribute='26px')
+											a(role='menuitem', tabindex='-1')
+												span.font-large Large
+										li(data-attribute='38px')
+											a(role='menuitem', tabindex='-1')
+												span.font-huge Huge
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Color')
+										i.icon-tint
+										span.caret
+									ul.dropdown-menu.change-canvas-attribute(data-role='textColor')
+										li(data-attribute='red')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:red') &nbsp 
+										li(data-attribute='black')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:black') &nbsp 
+										li(data-attribute='white')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:white') &nbsp 
+										li(data-attribute='greenYellow')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:greenYellow') &nbsp 
+										li(data-attribute='green')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:green') &nbsp 
+										li(data-attribute='blue')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:blue') &nbsp 
+										li(data-attribute='pink')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:pink') &nbsp 
+										li(data-attribute='gray')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:gray') &nbsp 
+										li(data-attribute='red')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:red') &nbsp 
+										
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Background Color')
+										i.icon-adjust
+										span.caret
+									ul.dropdown-menu.change-canvas-attribute(data-role='bgcolor')
+										li(data-attribute='red')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:red') &nbsp 
+										li(data-attribute='black')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:black') &nbsp 
+										li(data-attribute='white')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:white') &nbsp 
+										li(data-attribute='greenYellow')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:greenYellow') &nbsp 
+										li(data-attribute='green')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:green') &nbsp 
+										li(data-attribute='blue')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:blue') &nbsp 
+										li(data-attribute='pink')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:pink') &nbsp 
+										li(data-attribute='gray')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:gray') &nbsp 
+										li(data-attribute='red')
+											a(role='menuitem', tabindex='-1')
+												div(style='background:red') &nbsp 
+								.btn-group
+									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Background Image')
+										i.icon-picture
+										span.caret
+									ul.dropdown-menu
+							#upload-menu.pull-left
+								a.btn(href='#') Choose Image
+							#post-btn.pull-right
+								a#upload-image.btn(href='#') Create Meme
+								a.btn#submit Post
+					section
+						canvas(height="480", width="580", style='margin-bottom:15px;display:none;border:solid 1px #f0f0f0')
+			header#sort-header.navbar
+				nav.navbar-inner
+					.container
+						ul.nav
+							li.active
+								a(href='#') LATEST
+							li
+								a(href='#') MOST POPULAR
+							li
+								a(href='#') MOST COMMENTED
+						form.form-search.pull-right
+							input.input-medium(type='text', placeholder='Enter your search terms')
+			section.row#post-listing
+				-each post in latest
+					include components/post
+		.span4
+			.span4.top-block
+				h3 Top Posts
+				ul#top-posts-list.unstyled
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
+			.span4.top-block
+				h3 Top Posts
+				ul#top-posts-list.unstyled
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
+					li
+						img.span2(src='http://i.imgur.com/4Io8Oej.jpg')
+						.span2.top-block-span2
+							a(href='#') Enjoy the simple things in life...
+							p.top-block-like-menu
+								span.top-block-likes
+									strong 250
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-up
+								span.top-block-dislikes
+									strong 300
+									a.btn.btn-mini(href='#')
+										i.icon-thumbs-down
+							a.btn.btn-mini.btn-block(href='#') Comment
+						br.clear
 

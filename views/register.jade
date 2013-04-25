@@ -2,6 +2,7 @@ extends layout
 
 block content
 	div#main-container.container
-		h1 select a name
-		input(type='text', value=username)
-		button.btn update
+		form(method='post', action='/register')
+			h1 select a name
+			input(type='text', value=username, name='screen_name')
+			input(type='submit').btn update

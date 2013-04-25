@@ -7,11 +7,11 @@ html(lang='en')
 		meta(name='description', content='')
 		meta(name='author', content='')
 
-		link(href='http://fonts.googleapis.com/css?family=Merriweather+Sans:400,800', rel='stylesheet', type='text/css')
-		link(href='/stylesheets/bootstrap.css', rel='stylesheet')
+		link(href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300', rel='stylesheet', type='text/css')
+		//link(href='/stylesheets/bootstrap.css', rel='stylesheet')
 		link(href='/stylesheets/colorpicker.css', rel='stylesheet')
-		link(href='/stylesheets/bootstrap-responsive.css', rel='stylesheet')
-		link(href='/stylesheets/docs.css', rel='stylesheet')
+		link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+		link(href='/stylesheets/styles.css', rel='stylesheet')
 		// if lt IE 9
 		link(rel='apple-touch-icon-precomposed', sizes='144x144', href='assets/ico/apple-touch-icon-144-precomposed.png')
 		link(rel='apple-touch-icon-precomposed', sizes='114x114', href='assets/ico/apple-touch-icon-114-precomposed.png')
@@ -26,23 +26,53 @@ html(lang='en')
 		script(src='/javascripts/web.js')
 
 	body( data-spy="scroll", data-target=".bs-docs-sidebar")
-		div.navbar.navbar-inverse.navbar-fixed-top
-			div.navbar-inner
-				div.container
-					button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
-						span.icon-bar
-						span.icon-bar
-						span.icon-bar
-					a.brand(href='./index.html') Just Because I am
-					div.nav-collapse.collapse
-						ul.nav
-							-if(locals.session.user){
-								li
-									img(src="http://graph.facebook.com/"+locals.session.user.username+"/picture")
-								li.active
-									span=locals.session.user.screen_name
-							-}else{
-								li.active
-									a(href='/auth/facebook') Login with facebook
-							-}
-		block content
+		//	
+			div.navbar.navbar-inverse.navbar-fixed-top
+				div.navbar-inner
+					div.container
+						button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						a.brand(href='./index.html') Just Because I am
+						div.nav-collapse.collapse
+							ul.nav
+								-if(locals.user){
+									li
+										img(src="http://graph.facebook.com/"+locals.user.username+"/picture")
+									li.active
+										span=locals.user.screen_name
+									li.active
+										a(href='/logout') logout
+								-}else{
+									li.active
+										a(href='/auth/facebook') Login with facebook
+								-}
+		header#main-header.navbar.navbar-fixed-top
+			nav.navbar-inner
+				.container
+					a.brand(href='#') anymeme
+					ul.nav
+						li
+							a(href='#') HOME
+						li.divider-vertical
+						li
+							a(href='#') ABOUT
+						li.divider-vertical
+						li
+							a(href='#') BLOG
+					ul.nav.pull-right
+						-if(locals.user){
+							li
+								img(src="http://graph.facebook.com/"+locals.user.username+"/picture")
+							li
+								span=locals.user.screen_name
+							li.divider-vertical
+							li
+								a(href='/logout') logout
+						-}else{
+							li
+								a(href='/auth/facebook') Login with facebook
+						-}
+		section#main.container
+			block content

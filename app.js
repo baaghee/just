@@ -5,7 +5,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , jade_browser = require('jade-browser')
   , path = require('path')
@@ -20,6 +19,7 @@ mongoose = require('mongoose');
 db = mongoose.createConnection('localhost', 'anymeme');
 
 var User = require('./lib/User');    
+var Pic = require('./lib/Pic');    
 
 var sessionStore = new MongoStore({db:'anymeme'}); 
  
@@ -100,9 +100,7 @@ app.configure(function(){
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(function(req, res, next){
-		if(!app.locals.session){
-	  		app.locals.session = req.session;
-	  	}
+	  	app.locals.user = req.user;
   		next();
 	});	
 	app.use(app.router);
@@ -111,13 +109,16 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+app.get('/logout', function(req, res){
+	req.logout();
+	res.redirect('/');
+});
 
 app.get('/register', Authenticate, function(req,res){
-	console.log(req.session);
-	if(req.session.user.screen_name){
+	if(req.user.screen_name){
 		return res.redirect('/');
 	}
-	res.render('register', {username:req.session.user.username});
+	res.render('register', {username:req.user.username});
 });
 app.post('/register',  function(req, res){
 	var screen_name = req.body.screen_name;
@@ -144,35 +145,97 @@ app.get('/auth/facebook/callback',
 
 app.get('*', function(req, res, next){
 	//show signup page if user is not registered after authentication
-	if(typeof req.session.passport.user == 'undefined'){
+	if(typeof req.user == 'undefined'){
 		return next();
 	}
-	if(typeof req.session.user == 'undefined'){
-		User.findOne({_id:req.session.passport.user}, function(err, user){
-			if(err) throw err;
-			req.session.user = user;
-			if(!user.screen_name){
-				res.redirect('/register');
-			}
-			return next();
-		});
+
+	if(!req.user.screen_name){
+		res.redirect('/register');
 	}else{
 		return next();
 	}
 });
 
 app.get('/', function(req,res){
-	res.render('index');
+	//find latest posts
+	Pic.latest(function(err, latest){
+		res.render('index',{latest:latest});
+	});
 });
-app.post('/pic', function(req, res){
+app.post('/pic', Authenticate, function(req, res){
 	var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
 	var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
-	var file_name = __dirname + "/public/files/" + file_name_seed + '.png';
+	var f_name = file_name_seed + '.png';
+	var file_name = __dirname + "/public/files/" + f_name;
+	console.log(req);
 	fs.writeFile(file_name, pic, 'base64', function(err) {
 		if(err) throw err;
-		res.json({file:file_name});
+		new Pic({
+			user:req.user._id,
+			pic: f_name,
+			likes:0,
+			dislikes:0,
+			date:new Date(),
+			//ip:'string',
+			//request_headers:{}
+
+		}).save(function(err, doc){
+			if(err) throw err;
+			Pic
+			.findOne({_id:doc._id})
+			.populate('user', "id screen_name username")
+			.sort({_id:-1})
+			.exec(function(err, pic){
+				if(err) throw err;
+				res.json(pic);
+			});
+		});
 	});
-})
+});
+
+app.get('/posts/new', function(req,res){
+	Pic.latest(function(err, latest){
+		if(err) throw err;
+		res.json(latest);
+	});
+});
+app.post('/post/:id/approve', Authenticate, function(req, res){
+	var id = req.params.id;
+	var type = req.body.type;
+	if(!type){
+		return res.json({error: 'There was an error!'});
+	}
+	if(type != "like" && type != "dislike"){
+		return res.json({error:"Invalid request!"});
+	}
+	//check if casted
+	Pic.findOne({_id:id, 'approvals.user':req.user._id},{_id:1}, function(err, pic){
+		if(err) throw err;
+		if(pic){
+			return res.json({error: 'Already casted'});
+		}
+		var update = {
+			$push:{
+				approvals:{
+					user:req.user._id, 
+					type:type, 
+					date:new Date(), 
+					ip:'string'
+				}
+			},
+			$inc:{} 
+		};
+		update.$inc[type + "s"] = 1;
+		Pic.update({_id:id}, update, function(err){
+			if(err) throw err;
+			Pic.findOne({_id:id}, {likes:1, dislikes:1, _id:0}, function(err, likes){
+				if(err) throw err;
+				res.json(likes);
+			});
+		});
+		
+	});
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
