@@ -58,7 +58,7 @@ $(function(){
         	}
         	var dom = jade.render('post',{post:res});
         	$("#post-listing").prepend(dom);
-        	$("#input").clear();
+        	$("#input").val("").html("");
         	$("canvas").slideUp();
         });
     });
