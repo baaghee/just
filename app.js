@@ -178,7 +178,6 @@ app.post('/pic', Authenticate, function(req, res){
 	var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
 	var f_name = file_name_seed + '.png';
 	var file_name = __dirname + "/public/files/" + f_name;
-	console.log(req);
 	fs.writeFile(file_name, pic, 'base64', function(err) {
 		if(err) throw err;
 		new Pic({

@@ -71,6 +71,7 @@ $(function(){
 	function render(){
 		$("canvas").slideDown();
 		$("canvas").clearCanvas();
+		console.log(type);
 		if(type == 'text'){
 			$("canvas").drawRect({
 			  fillStyle: text_properties.bgcolor,
@@ -82,10 +83,10 @@ $(function(){
 			$("canvas").drawText({
 			  fillStyle: text_properties.textColor,
 			  strokeWidth: 2,
-			  x: 220, y: 150,
+			  x: 220, y: 220,
 			  align: "center",
 			  font: text_properties.size + " 'Merriweather Sans', sans-serif",
-			  maxWidth: 500,
+			  maxWidth: 580,
 			  text: text
 			});
 		}else if(type=='image'){
@@ -100,20 +101,20 @@ $(function(){
 	          fillStyle: "#000",
 	          strokeStyle: "#fff",
 	          strokeWidth: 1,
-	          x: 220, y: 300,
+	          x: 290, y: 400,
 	          align: "center",
 	          font: "bold 40px Verdana, sans-serif",
-	          maxWidth: 500,
+	          maxWidth: 580,
 	          text: $("#bot-input").val()
 	        });
 	        $("canvas").drawText({
 	          fillStyle: "#000",
 	          strokeStyle: "#fff",
 	          strokeWidth: 1,
-	          x: 220, y: 50,
+	          x: 290, y: 70,
 	          align: "center",
 	          font: "bold 40px Verdana, sans-serif",
-	          maxWidth: 500,
+	          maxWidth: 580,
 	          text: $("#top-input").val()
 	        });
 		}
@@ -141,12 +142,14 @@ $(function(){
 	$("#upload-image").click(function(){
             
         if ($(this).hasClass('active')) {
+        	type = "text";
             $("#any-textarea").fadeIn();
             $("#text-menu").fadeIn();
             $("#meme-textarea").hide();
             $("#upload-menu").hide();
             $(this).removeClass('active');
         } else {
+        	type = "image";
             $("#any-textarea").hide();
             $("#text-menu").hide();
             $("#meme-textarea").fadeIn();

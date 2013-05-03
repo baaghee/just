@@ -44,8 +44,8 @@ block content
 							#any-textarea
 								textarea#input(rows='3', placeholder='Type to generate image')
 							#meme-textarea
-								textarea(rows='1', placeholder='Top text')
-								textarea(rows='1', placeholder='Bottom text')
+								textarea(rows='1', placeholder='Top text')#top-input
+								textarea(rows='1', placeholder='Bottom text')#bot-input
 							#text-menu.pull-left
 								.btn-group
 									a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Choose Font')
@@ -165,7 +165,13 @@ block content
 										span.caret
 									ul.dropdown-menu
 							#upload-menu.pull-left
-								a.btn(href='#') Choose Image
+								div.fileupload.fileupload-new(data-provides='fileupload')
+									span.btn.btn-file
+										span.fileupload-new Select file
+										span.fileupload-exists Change
+										input(type='file')#file
+									span.fileupload-preview
+									a.close.fileupload-exists(href='#',data-dismiss='fileupload',style='float: none') ×
 							#post-btn.pull-right
 								a#upload-image.btn(href='#') Create Meme
 								a.btn#submit Post
