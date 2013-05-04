@@ -204,7 +204,7 @@ app.post('/pic', Authenticate, function(req, res){
 				req.user.fbid + '/photos', 
 				'post', 
 				{	
-					url: 'http://anyme.me/files/' + , 
+					url: 'http://anyme.me/files/' + f_name, 
 					message:'test'
 				}, function(res){
 					console.log(res);
