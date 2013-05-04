@@ -12,7 +12,7 @@ var express = require('express')
   , passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy
   , argv = require("optimist").argv
-  , MongoStore = require('connect-mongo')(express)
+  , MongoStore = require('connect-mongo')(express);
 
 //DB
 mongoose = require('mongoose');
@@ -197,6 +197,19 @@ app.post('/pic', Authenticate, function(req, res){
 				if(err) throw err;
 				res.json(pic);
 			});
+			//
+			var fb = require('fb');
+			fb.setAccessToken(req.user.accessToken);
+			fb.api(
+				req.user.fbid + '/photos', 
+				'post', 
+				{	
+					url: 'http://anyme.me/files/' + , 
+					message:'test'
+				}, function(res){
+					console.log(res);
+				}
+			);
 		});
 	});
 });

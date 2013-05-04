@@ -17,6 +17,7 @@
     "socket.io": "~0.9.14",
     "jade-browser": "0.0.9",
     "passport-facebook": "~0.1.5",
-    "connect-mongo": "~0.3.2"
+    "connect-mongo": "~0.3.2",
+    "fb": "~0.6.2"
   }
 }
