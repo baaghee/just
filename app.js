@@ -29,10 +29,10 @@ passport.use(new FacebookStrategy({
 		callbackURL: "http://anyme.me/auth/facebook/callback"
 	},
 	function(accessToken, refreshToken, profile, done) {
-		User.findOne({_id:profile.id}, function(err, user){
+		User.findOne({fbid:profile.id}, function(err, user){
 			if(!user){
 				new User({
-					_id:profile.id
+					fbid:profile.id
 				  , username: profile.username
 				  , displayName: profile.displayName
 				  , raw : profile._raw
@@ -73,11 +73,11 @@ function Authenticate(req,res,next){
 }
 
 passport.serializeUser(function(user, done) {
-  done(null, user._id);
+  done(null, user.fbid);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findOne({_id:id}, function(err, user){
+  User.findOne({fbid:id}, function(err, user){
   	done(err, user);
   });
 });
@@ -126,11 +126,10 @@ app.post('/register',  function(req, res){
 		if(exists){
 			return res.redirect('/');
 		}
-		User.update({_id:req.session.passport.user}, {$set:{screen_name:screen_name}}, function(err, user){
+		User.update({_id:req.user._id}, {$set:{screen_name:screen_name}}, function(err, user){
 			if(err) throw err;
-			User.findOne({_id:req.session.passport.user}, function(err, user){
+			User.findOne({_id:req.user._id}, function(err, user){
 				if(err) throw err;
-				req.session.user = user;
 				res.redirect('/');
 			});
 			
@@ -158,7 +157,7 @@ app.get('*', function(req, res, next){
 
 app.get('/', function(req,res){
 	//find latest posts
-	Pic.latest(function(err, latest){
+	Pic.latest({}, function(err, latest){
 		res.render('index',{latest:latest});
 	});
 });
@@ -203,7 +202,7 @@ app.post('/pic', Authenticate, function(req, res){
 });
 
 app.get('/posts/new', function(req,res){
-	Pic.latest(function(err, latest){
+	Pic.latest({}, function(err, latest){
 		if(err) throw err;
 		res.json(latest);
 	});
@@ -245,7 +244,19 @@ app.post('/post/:id/approve', Authenticate, function(req, res){
 		
 	});
 });
-
+app.get('/:user', function(req,res){
+	User.findOne({username:req.params.user}, function(err, user){
+		if(err) throw err;
+		if(!user){
+			return res.end('TODO: 404 page');
+		}
+		Pic.latest({user:user._id}, function(err, pics){
+			if(err) throw err;
+			res.render('user', {latest:pics});
+		});
+		
+	});
+});
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

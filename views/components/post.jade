@@ -1,7 +1,7 @@
 .post
 	.post-head
 		img(src="http://graph.facebook.com/"+post.user.username+"/picture")
-		a(href='#')=post.user.screen_name
+		a(href='/' + post.user.screen_name)=post.user.screen_name
 		span.date 2 July 2013
 		br.clear
 	.post-like-menu
@@ -16,10 +16,6 @@
 	a(href='/' + post.user.screen_name + '/' + post._id)
 		img(src="/files/" + post.pic)
 	.post-footer
-		.pull-left
-			a.btn.btn-small(href='#')
-				strong 20
-				| Comments
 		.pull-right.btn-group
 			a.btn.btn-small(href='#') FB
 			a.btn.btn-small(href='#') Twitter

@@ -4,7 +4,8 @@ $(function(){
 		text:"type something...",
 		textColor:"black",
 		bgcolor:"orange",
-		size:"14px"
+		size:"14px",
+		font: "Arial"
 	}
     var text;
     var textColor;
@@ -83,9 +84,9 @@ $(function(){
 			$("canvas").drawText({
 			  fillStyle: text_properties.textColor,
 			  strokeWidth: 2,
-			  x: 220, y: 220,
+			  x: 290, y: 220,
 			  align: "center",
-			  font: text_properties.size + " 'Merriweather Sans', sans-serif",
+			  font: text_properties.size + " '"+text_properties.font+"', sans-serif",
 			  maxWidth: 580,
 			  text: text
 			});

@@ -1,0 +1,148 @@
+header#sub-header.navbar
+	nav.navbar-inner
+		.container
+			form#post-form.form-search.pull-right
+				#any-textarea
+					textarea#input(rows='3', placeholder='Type to generate image')
+				#meme-textarea
+					textarea(rows='1', placeholder='Top text')#top-input
+					textarea(rows='1', placeholder='Bottom text')#bot-input
+				#text-menu.pull-left
+					.btn-group
+						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Choose Font')
+							i.icon-font
+							span.caret
+						ul.dropdown-menu.change-canvas-attribute(data-role='font')
+							li(data-attribute="Days One")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Days One', sans-serif;") Days One
+							li(data-attribute="Press Start 2P")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Press Start 2P', sans-serif;") Press Start 2P
+							li(data-attribute="Karla")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Karla', sans-serif;") Karla
+							li(data-attribute="Grand Hotel")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Grand Hotel', sans-serif;") Karla
+					.btn-group
+						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Weight')
+							i.icon-bold
+							span.caret
+						ul.dropdown-menu
+							li
+								a(role='menuitem', tabindex='-1')
+									span.normal Normal
+							li
+								a(role='menuitem', tabindex='-1')
+									span.bold Bold
+							li
+								a(role='menuitem', tabindex='-1')
+									span.italic Italic
+							li
+								a(role='menuitem', tabindex='-1')
+									span.underlined Underlined
+					.btn-group
+						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Size')
+							i.icon-text-width
+							span.caret
+						ul.dropdown-menu.change-canvas-attribute(data-role='size')
+							li(data-attribute='14px')
+								a(role='menuitem', tabindex='-1')
+									span.font-small Small
+							li(data-attribute='18px')
+								a(role='menuitem', tabindex='-1')
+									span.font-normal Normal
+							li(data-attribute='26px')
+								a(role='menuitem', tabindex='-1')
+									span.font-large Large
+							li(data-attribute='38px')
+								a(role='menuitem', tabindex='-1')
+									span.font-huge Huge
+					.btn-group
+						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Color')
+							i.icon-tint
+							span.caret
+						ul.dropdown-menu.change-canvas-attribute(data-role='textColor')
+							li(data-attribute='red')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:red') &nbsp 
+							li(data-attribute='black')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:black') &nbsp 
+							li(data-attribute='white')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:white') &nbsp 
+							li(data-attribute='greenYellow')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:greenYellow') &nbsp 
+							li(data-attribute='green')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:green') &nbsp 
+							li(data-attribute='blue')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:blue') &nbsp 
+							li(data-attribute='pink')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:pink') &nbsp 
+							li(data-attribute='gray')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:gray') &nbsp 
+							li(data-attribute='red')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:red') &nbsp 
+							
+					.btn-group
+						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Background Color')
+							i.icon-adjust
+							span.caret
+						ul.dropdown-menu.change-canvas-attribute(data-role='bgcolor')
+							li(data-attribute='red')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:red') &nbsp 
+							li(data-attribute='black')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:black') &nbsp 
+							li(data-attribute='white')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:white') &nbsp 
+							li(data-attribute='greenYellow')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:greenYellow') &nbsp 
+							li(data-attribute='green')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:green') &nbsp 
+							li(data-attribute='blue')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:blue') &nbsp 
+							li(data-attribute='pink')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:pink') &nbsp 
+							li(data-attribute='gray')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:gray') &nbsp 
+							li(data-attribute='red')
+								a(role='menuitem', tabindex='-1')
+									div(style='background:red') &nbsp 
+				#upload-menu.pull-left
+					div.fileupload.fileupload-new(data-provides='fileupload')
+						span.btn.btn-file
+							span.fileupload-new Select file
+							span.fileupload-exists Change
+							input(type='file')#file
+						span.fileupload-preview
+						a.close.fileupload-exists(href='#',data-dismiss='fileupload',style='float: none') ×
+				#post-btn.pull-right
+					a#upload-image.btn(href='#') Image
+					a.btn#submit Post
+		section
+			canvas(height="480", width="580", style='margin-bottom:15px;display:none;border:solid 1px #f0f0f0')
+header#sort-header.navbar
+	nav.navbar-inner
+		.container
+			ul.nav
+				li.active
+					a(href='#') LATEST
+				li
+					a(href='#') MOST POPULAR
+				li
+					a(href='#') MOST COMMENTED
+			form.form-search.pull-right
+				input.input-medium(type='text', placeholder='Enter your search terms')
+
