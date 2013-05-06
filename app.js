@@ -137,7 +137,7 @@ app.post('/register',  function(req, res){
 	});
 });
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['publish_stream', 'publish_actions'] }));
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { successRedirect: '/',
                                       failureRedirect: '/login' }));
@@ -198,19 +198,22 @@ app.post('/pic', Authenticate, function(req, res){
 				res.json(pic);
 			});
 			//
-			var fb = require('fb');
-			fb.setAccessToken(req.user.accessToken);
-			fb.api(
-				req.user.fbid + '/photos', 
-				'post', 
-				{	
-					url: 'http://anyme.me/files/' + f_name, 
-					message:'test'
-				}, function(res){
-					console.log(res);
-				}
-			);
-		});
+           var fb = require('fb');
+           //fb.setAccessToken();
+           fb.api(
+                  'me/feed', 
+                   'post',
+                   {
+                   		   link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+                           picture: 'http://anyme.me/files/' + f_name, 
+                           message:'testing',
+                           access_token:req.user.accessToken
+                   }, function(res){
+                           console.log(res);
+                   }
+           );
+			
+		});        
 	});
 });
 
