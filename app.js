@@ -12,8 +12,8 @@ var express = require('express')
   , passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy
   , argv = require("optimist").argv
-  , MongoStore = require('connect-mongo')(express);
-
+  , MongoStore = require('connect-mongo')(express)
+  , fb = require('fb')
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection('localhost', 'anymeme');
@@ -198,13 +198,13 @@ app.post('/pic', Authenticate, function(req, res){
 				res.json(pic);
 			});
 			//
-           var fb = require('fb');
-           //fb.setAccessToken();
+           
            fb.api(
                   'me/feed', 
                    'post',
                    {
                    		   link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+                   		   caption: 'New post by ' + req.user.screen_name,
                            picture: 'http://anyme.me/files/' + f_name, 
                            message:'testing',
                            access_token:req.user.accessToken
