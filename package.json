@@ -18,6 +18,9 @@
     "jade-browser": "0.0.9",
     "passport-facebook": "~0.1.5",
     "connect-mongo": "~0.3.2",
-    "fb": "~0.6.2"
+    "fb": "~0.6.2",
+    "moment": "~2.0.0",
+    "async": "~0.2.8",
+    "gm": "~1.9.0"
   }
 }

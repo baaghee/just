@@ -14,6 +14,8 @@ var express = require('express')
   , argv = require("optimist").argv
   , MongoStore = require('connect-mongo')(express)
   , fb = require('fb')
+  , async = require('async')
+  , gm = require('gm')
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection('localhost', 'anymeme');
@@ -156,9 +158,15 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', function(req,res){
-	//find latest posts
-	Pic.latest({}, function(err, latest){
-		res.render('index',{latest:latest});
+	async.auto({
+		latest:function(fn){
+			Pic.latest({}, fn);
+		},
+		popular:function(fn){
+			Pic.popular(fn);
+		}
+	}, function(err, docs){
+		res.render('index',docs);
 	});
 });
 app.get('/:user/:pic', function(req,res){
@@ -169,8 +177,13 @@ app.get('/:user/:pic', function(req,res){
 	.populate('user', "id screen_name username")
 	.exec(function(err, pic){
 		if(err) throw err;
-		res.render('display', {pic:pic});
+		if(pic){
+			//increment views
+			Pic.update({_id:id},{$inc:{views:1}}, function(err){});
+			res.render('display', {pic:pic, title:pic.user.screen_name + " on Anyme.me"});
+		}
 	});
+	
 });
 app.post('/pic', Authenticate, function(req, res){
 	var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
@@ -195,23 +208,31 @@ app.post('/pic', Authenticate, function(req, res){
 			.populate('user', "id screen_name username")
 			.exec(function(err, pic){
 				if(err) throw err;
-				res.json(pic);
+				//resize
+				gm(file_name)
+				.resize(260,260)
+				.write( __dirname + "/public/files/" + 260 + f_name, function(err){
+					if(err) throw err;
+					res.json(pic);
+				});
 			});
-			//
-           
-           fb.api(
-                  'me/feed', 
-                   'post',
-                   {
-                   		   link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
-                   		   caption: 'New post by ' + req.user.screen_name,
-                           picture: 'http://anyme.me/files/' + f_name, 
-                           message:'testing',
-                           access_token:req.user.accessToken
-                   }, function(res){
-                           console.log(res);
-                   }
-           );
+			
+			if(argv.skipfb){
+				return;
+			}
+			fb.api(
+				'me/feed', 
+				'post',
+				{
+					link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+					caption: 'New post by ' + req.user.screen_name,
+					picture: 'http://anyme.me/files/' + f_name, 
+					message:'testing',
+					access_token:req.user.accessToken
+				}, function(res){
+					console.log(res);
+				}
+			);
 			
 		});        
 	});
@@ -266,11 +287,18 @@ app.get('/:user', function(req,res){
 		if(!user){
 			return res.end('TODO: 404 page');
 		}
-		Pic.latest({user:user._id}, function(err, pics){
-			if(err) throw err;
-			res.render('user', {latest:pics});
+		async.auto({
+			latest:function(fn){
+				Pic.latest({user:user._id}, fn);
+			},
+			popular:function(fn){
+				Pic.popular(fn);
+			}
+		}, function(err, docs){
+			if (err) throw err;
+			docs.title = user.screen_name + " on Anyme.me!"; 
+			res.render('user',docs);
 		});
-		
 	});
 });
 http.createServer(app).listen(app.get('port'), function(){

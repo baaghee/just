@@ -1,0 +1,10 @@
+.post-like-menu
+	span.top-block-likes
+		strong(class="like_" + post._id)=post.likes
+		a.btn.btn-small.approve(data-id=post._id, data-data='like')
+			i.icon-thumbs-up 
+	span.top-block-dislikes
+		strong(class="dislike_" + post._id)=post.dislikes
+		a.btn.btn-small.approve(data-id=post._id, data-data='dislike')
+			i.icon-thumbs-down
+
