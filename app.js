@@ -16,7 +16,6 @@ var express = require('express')
   , fb = require('fb')
   , async = require('async')
   , gm = require('gm')
-  , canvas = require('canvas')
   , moment = require('moment')
 
 //DB
