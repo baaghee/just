@@ -3,13 +3,14 @@ $(function(){
 	var text_properties = {
 		text:"type something...",
 		textColor:"black",
-		bgcolor:"orange",
+		bgColor:"orange",
 		size:"14px",
 		font: "Arial"
 	}
+	var shadow = true;
     var text;
     var textColor;
-    var bgcolor;
+    var bgColor;
     var size;
     var type = 'text';
 
@@ -34,7 +35,7 @@ $(function(){
 	});
 	$('#colorpicker').colorpicker().on('changeColor', function(e){
 		var color = e.color.toHex();
-		bgcolor = color;
+		bgColor = color;
 		render();
 		
 	});
@@ -44,6 +45,7 @@ $(function(){
 		reader.readAsDataURL(file);
 		reader.onload = function(){
 			img = reader.result;
+			text_properties.bgColor = void 0;
 			render();
 		}
 	});
@@ -67,36 +69,51 @@ $(function(){
     $("#input").keyup(function(e){
         e.preventDefault();
         text = $("#input").val();
-        render();
+        if(text == ''){
+        	$("canvas").slideUp();
+        }else{
+	        render();
+	    }
     });
 	function render(){
 		$("canvas").slideDown();
 		$("canvas").clearCanvas();
-		console.log(type);
-		if(type == 'text'){
-			$("canvas").drawRect({
-			  fillStyle: text_properties.bgcolor,
-			  x: 0, y: 0,
-			  width: 4000,
-			  height: 4000,
-			  fromCenter: false
-			});
-			$("canvas").drawText({
-			  fillStyle: text_properties.textColor,
-			  strokeWidth: 2,
-			  x: 290, y: 220,
-			  align: "center",
-			  font: text_properties.size + " '"+text_properties.font+"', sans-serif",
-			  maxWidth: 580,
-			  text: text
-			});
-		}else if(type=='image'){
+		if(img && !text_properties.bgColor){
 			$("canvas").drawImage({
 			  source: img,
 			  x: 0, y: 0,
-			 // width: 100,
+			  width: 580,
+			  height: 480,
 			  fromCenter: false
 			});
+
+		}
+		if(type == 'text'){
+			if(!img || !!text_properties.bgColor){
+				$("canvas").drawRect({
+				  fillStyle: text_properties.bgColor,
+				  x: 0, y: 0,
+				  width: 4000,
+				  height: 4000,
+				  fromCenter: false
+				});
+			}
+
+			$("canvas").drawText({
+				fillStyle: text_properties.textColor,
+				strokeWidth: 2,
+				x: 290, y: 220,
+				align: "center",
+				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
+				maxWidth: 580,
+				shadowColor: "#fff",
+				shadowBlur: 10,
+				shadowX: 0,
+				shadowY: 0,			  
+				maxWidth: 580,
+				text: text
+			});
+		}else if(type=='image'){
 			
 	        $("canvas").drawText({
 	          fillStyle: "#000",
@@ -147,14 +164,12 @@ $(function(){
             $("#any-textarea").fadeIn();
             $("#text-menu").fadeIn();
             $("#meme-textarea").hide();
-            $("#upload-menu").hide();
             $(this).removeClass('active');
         } else {
         	type = "image";
             $("#any-textarea").hide();
             $("#text-menu").hide();
             $("#meme-textarea").fadeIn();
-            $("#upload-menu").fadeIn();
             $(this).addClass('active');
         }
     });
