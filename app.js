@@ -17,6 +17,7 @@ var express = require('express')
   , async = require('async')
   , gm = require('gm')
   , moment = require('moment')
+  , md5 = require('MD5')
 
 //DB
 mongoose = require('mongoose');
@@ -244,66 +245,74 @@ app.post('/pic', Authenticate, function(req, res){
 		}
 
 		var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
-		var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
-		var f_name = file_name_seed + '.png';
-		var file_name = __dirname + "/public/files/" + f_name;
+		var hash = md5(pic);
+		Pic.count({md5:hash}, function(err, count){
+			if(err) throw err;
+			if(count > 0){
+				return res.json({error:"Already posted"});
+			}
+			var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
+			var f_name = file_name_seed + '.png';
+			var file_name = __dirname + "/public/files/" + f_name;
 		
 	
-		/*var c = new canvas(580,480);
-		ctx = c.getContext('2d');
-		ctx.font = '30px "Baroque Script"';
-		ctx.fillText("Awesome!", 50, 100);
-		var pic = c.toDataURL().replace(/^data:image\/png;base64,/,"");
-		fs.writeFile('./test.png', pic, 'base64', function(err) {
+			/*var c = new canvas(580,480);
+			ctx = c.getContext('2d');
+			ctx.font = '30px "Baroque Script"';
+			ctx.fillText("Awesome!", 50, 100);
+			var pic = c.toDataURL().replace(/^data:image\/png;base64,/,"");
+			fs.writeFile('./test.png', pic, 'base64', function(err) {
 
-		});*/
-		fs.writeFile(file_name, pic, 'base64', function(err) {
-			if(err) throw err;
-			new Pic({
-				user:req.user._id,
-				pic: f_name,
-				likes:0,
-				dislikes:0,
-				date:new Date(),
-				ip:req.ip,
-				//request_headers:{}
-
-			}).save(function(err, doc){
+			});*/
+			fs.writeFile(file_name, pic, 'base64', function(err) {
 				if(err) throw err;
-				Pic
-				.findOne({_id:doc._id})
-				.populate('user', "id screen_name username")
-				.exec(function(err, pic){
+				new Pic({
+					user:req.user._id,
+					pic: f_name,
+					likes:0,
+					dislikes:0,
+					date:new Date(),
+					ip:req.ip,
+					md5:hash
+					//request_headers:{}
+
+				}).save(function(err, doc){
 					if(err) throw err;
-					//resize
-					gm(file_name)
-					.resize(260,260)
-					.write( __dirname + "/public/files/" + 260 + f_name, function(err){
+					Pic
+					.findOne({_id:doc._id})
+					.populate('user', "id screen_name username")
+					.exec(function(err, pic){
 						if(err) throw err;
-						res.json(pic);
+						//resize
+						gm(file_name)
+						.resize(260,260)
+						.write( __dirname + "/public/files/" + 260 + f_name, function(err){
+							if(err) throw err;
+							res.json(pic);
+						});
 					});
-				});
 			
-				if(argv.skipfb){
-					return;
-				}
-				if(req.body.post_fb){
-					fb.api(
-						'me/feed', 
-						'post',
-						{
-							link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
-							caption: 'New post by ' + req.user.screen_name,
-							picture: 'http://anyme.me/files/' + f_name, 
-							message:'testing',
-							access_token:req.user.accessToken
-						}, function(res){
-							console.log(res);
-						}
-					);
-				}
+					if(argv.skipfb){
+						return;
+					}
+					if(req.body.post_fb){
+						fb.api(
+							'me/feed', 
+							'post',
+							{
+								link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+								caption: 'New post by ' + req.user.screen_name,
+								picture: 'http://anyme.me/files/' + f_name, 
+								message:'testing',
+								access_token:req.user.accessToken
+							}, function(res){
+								console.log(res);
+							}
+						);
+					}
 			
-			});        
+				});        
+			});
 		});
 	});
 });
