@@ -16,6 +16,9 @@ var express = require('express')
   , fb = require('fb')
   , async = require('async')
   , gm = require('gm')
+  , canvas = require('canvas')
+  , moment = require('moment')
+
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection('localhost', 'anymeme');
@@ -185,56 +188,98 @@ app.get('/:user/:pic', function(req,res){
 	});
 	
 });
-app.post('/pic', Authenticate, function(req, res){
-	var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
-	var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
-	var f_name = file_name_seed + '.png';
-	var file_name = __dirname + "/public/files/" + f_name;
-	fs.writeFile(file_name, pic, 'base64', function(err) {
-		if(err) throw err;
-		new Pic({
-			user:req.user._id,
-			pic: f_name,
-			likes:0,
-			dislikes:0,
-			date:new Date(),
-			//ip:'string',
-			//request_headers:{}
+app.post('/test/', function(req, res){
+    var type = req.body.type;
+    var text = req.body.text;
+    var textColor = req.body.textColor;
+    var bgcolor;
+    var size;
+    var top;
+    var bottom;
+    if(type == '' || !type || "text image".indexOf(type) == -1){
+    	return res.json({error:'Invalid request!'});
+    }
+    if(type == 'text'){
+    	if(text == '' || !text){
+    		return res.json({error:'Invalid request!'});
+    	}
+    }
+    if(type == 'image'){
+    	if((!top || top == '') && (!bottom || bottom == '')){
+    		return  res.json({error:'Invalid request!'});
+    	}
+    }
+});
 
-		}).save(function(err, doc){
+app.post('/pic', Authenticate, function(req, res){
+	Pic.count({user:req.user._id, date:{$gt:moment().subtract('hours',1)}}, function(err, count){
+		if(err) throw err;
+		if(count == 20){
+			return res.json({error: "You have exceeded your limit for the hour."});
+		}
+
+		var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
+		var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
+		var f_name = file_name_seed + '.png';
+		var file_name = __dirname + "/public/files/" + f_name;
+		
+	
+		/*var c = new canvas(580,480);
+		ctx = c.getContext('2d');
+		ctx.font = '30px "Baroque Script"';
+		ctx.fillText("Awesome!", 50, 100);
+		var pic = c.toDataURL().replace(/^data:image\/png;base64,/,"");
+		fs.writeFile('./test.png', pic, 'base64', function(err) {
+
+		});*/
+		fs.writeFile(file_name, pic, 'base64', function(err) {
 			if(err) throw err;
-			Pic
-			.findOne({_id:doc._id})
-			.populate('user', "id screen_name username")
-			.exec(function(err, pic){
+			new Pic({
+				user:req.user._id,
+				pic: f_name,
+				likes:0,
+				dislikes:0,
+				date:new Date(),
+				//ip:'string',
+				//request_headers:{}
+
+			}).save(function(err, doc){
 				if(err) throw err;
-				//resize
-				gm(file_name)
-				.resize(260,260)
-				.write( __dirname + "/public/files/" + 260 + f_name, function(err){
+				Pic
+				.findOne({_id:doc._id})
+				.populate('user', "id screen_name username")
+				.exec(function(err, pic){
 					if(err) throw err;
-					res.json(pic);
+					//resize
+					gm(file_name)
+					.resize(260,260)
+					.write( __dirname + "/public/files/" + 260 + f_name, function(err){
+						if(err) throw err;
+						res.json(pic);
+					});
 				});
-			});
 			
-			if(argv.skipfb){
-				return;
-			}
-			fb.api(
-				'me/feed', 
-				'post',
-				{
-					link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
-					caption: 'New post by ' + req.user.screen_name,
-					picture: 'http://anyme.me/files/' + f_name, 
-					message:'testing',
-					access_token:req.user.accessToken
-				}, function(res){
-					console.log(res);
+				if(argv.skipfb){
+					return;
 				}
-			);
+				if(req.body.post_fb){
+					fb.api(
+						'me/feed', 
+						'post',
+						{
+							link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+							caption: 'New post by ' + req.user.screen_name,
+							picture: 'http://anyme.me/files/' + f_name, 
+							message:'testing',
+							access_token:req.user.accessToken
+						}, function(res){
+							console.log(res);
+						}
+					);
+				}
 			
-		});        
+			});        
+		});
 	});
 });
 

@@ -54,7 +54,7 @@ $(function(){
         
         $.post('/pic', {pic:img}, function(res){
         	if(res.error){
-        		//TODO
+        		alert(res.error);
         		return;
         	}
         	var dom = jade.render('post',{post:res});

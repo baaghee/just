@@ -295,7 +295,7 @@ body {
 
 #next-menu {
 	position: fixed;
-	width: 700px;
+	width: 590px;
 	background: rgba(255, 255, 255, .7);
 	top: 92px;
 	padding: 10px;
@@ -303,7 +303,7 @@ body {
 }
 
 #next-menu .span4 {
-	width: 350px;
+	width: 295px;
 	margin: 0;
 }
 
