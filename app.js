@@ -365,7 +365,7 @@ app.post('/post/:id/approve', Authenticate, function(req, res){
 	});
 });
 app.get('/:user', function(req,res){
-	User.findOne({username:req.params.user}, function(err, user){
+	User.findOne({screen_name:req.params.user}, function(err, user){
 		if(err) throw err;
 		if(!user){
 			return res.end('TODO: 404 page');
