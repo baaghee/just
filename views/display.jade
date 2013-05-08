@@ -1,6 +1,16 @@
 extends layout
 
 block content
+	div#fb-root
+	script(type='text/javascript')
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=565414836813596";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	script(type='text/javascript') !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
 	div.row
 		div.span9(style='width:590px')
 			section#next-menu.row.btn-group
@@ -32,12 +42,11 @@ block content
 							div.pull-left
 								a.btn.btn-small.make-favorite(data-id=pic._id)
 									strong Favorite
-						div.pull-right.btn-group
-							a.btn.btn-small(href='#') FB
-							a.btn.btn-small(href='#') Twitter
-							a.btn.btn-small(href='#') Pinterest
-							a.btn.btn-small(href='#') Tumblr
-							a.btn.btn-small(href='#') G+
+						div.pull-right(style='margin-right:15px')
+							div.span1
+								div.fb-like(data-send="false", data-layout="button_count", data-width="450", data-show-faces="true", data-font="segoe ui")
+							div.span1
+								a.twitter-share-button(href="https://twitter.com/share", data-via="anymeme") Tweet
 						br.clear
 					div
 						h4 Comments

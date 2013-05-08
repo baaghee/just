@@ -32,28 +32,6 @@ html(lang='en')
 		script(src='/javascripts/web.js')
 
 	body( data-spy="scroll", data-target=".bs-docs-sidebar")
-		//	
-			div.navbar.navbar-inverse.navbar-fixed-top
-				div.navbar-inner
-					div.container
-						button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-						a.brand(href='./index.html') Just Because I am
-						div.nav-collapse.collapse
-							ul.nav
-								-if(locals.user){
-									li
-										img(src="http://graph.facebook.com/"+locals.user.username+"/picture")
-									li.active
-										span=locals.user.screen_name
-									li.active
-										a(href='/logout') logout
-								-}else{
-									li.active
-										a(href='/auth/facebook') Login with facebook
-								-}
 		header#main-header.navbar.navbar-fixed-top
 			nav.navbar-inner
 				.container
@@ -61,9 +39,9 @@ html(lang='en')
 					ul.nav.pull-right
 						-if(locals.user){
 							li
-								img(src="http://graph.facebook.com/"+locals.user.username+"/picture")
-							li
-								span=locals.user.screen_name
+								a(href='/' + locals.user.screen_name)
+									img(width='24', style='margin-right:10px', src="http://graph.facebook.com/"+locals.user.username+"/picture")
+									span=locals.user.screen_name
 							li.divider-vertical
 							li
 								a(href='/logout') logout
