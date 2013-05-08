@@ -172,6 +172,32 @@ app.get('/', function(req,res){
 		res.render('index',docs);
 	});
 });
+app.get('/:user/favorites', function(req,res){
+	User.findOne({username:req.params.user}, function(err, user){
+		if(err) throw err;
+		if(!user){
+			return res.end('TODO: 404 page');
+		}
+		async.auto({
+			popular:function(fn){
+				Pic.popular(fn);
+			},
+			favorites:function(fn){
+				Pic
+				.find({'favorited.user':user._id}, {approvals:0, favorited:0, ip:0, request_headers:0})
+				.sort({_id:-1})
+				.limit(20)
+				.populate('user', "id screen_name username")
+				.exec(fn);
+			}
+		}, function(err, docs){
+			if (err) throw err;
+			docs.title = user.screen_name + " favorite posts on Anyme.me!";
+			docs.user = user;
+			res.render('user-favorite',docs);
+		});
+	});
+});
 app.get('/:user/:pic', function(req,res){
 	//find latest posts
 	var id = req.params.pic;
@@ -292,7 +318,7 @@ app.get('/posts/new', function(req,res){
 app.get('/posts/before/:id', function(req, res){
 	var id = req.params.id;
 	Pic
-	.find({_id:{$lt:id}})
+	.find({_id:{$lt:id}},{approvals:0, favorited:0, ip:0, request_headers:0})
 	.sort({_id:-1})
 	.limit(20)
 	.populate('user', "id screen_name username")
@@ -351,11 +377,41 @@ app.get('/:user', function(req,res){
 			},
 			popular:function(fn){
 				Pic.popular(fn);
+			},
+			posts:function(fn){
+				Pic.count({user:user._id},fn);
+			},
+			favorites:function(fn){
+				Pic.count({'favorited.user':user._id}, fn);
 			}
 		}, function(err, docs){
 			if (err) throw err;
-			docs.title = user.screen_name + " on Anyme.me!"; 
+			docs.title = user.screen_name + " on Anyme.me!";
+			docs.user = user;
 			res.render('user',docs);
+		});
+	});
+});
+app.post('/favorite', Authenticate, function(req, res){
+	var id = req.body.id;
+	var uid = req.user._id;
+	if(!id){
+		return res.json({error:'Incomplete request'});
+	}
+	//check if user had already favorited
+	Pic.findOne({_id:id, 'favorited.user':uid}, {_id:1}, function(err, post){
+		if(err) throw err;
+		if(post){
+			//unfavorite if favorited
+			return Pic.update({_id:id},{$inc:{favorites:-1}, $pull:{favorited:{user:uid}}}, function(err, changed){
+				if(err) throw err;
+				res.json({favorite:0});
+			});
+		}
+		//favorite it
+		Pic.update({_id:id},{$inc:{favorites:1}, $push:{favorited:{user:uid, date:new Date(), ip:req.ip}}}, function(err, changed){
+			if(err) throw err;
+			res.json({favorite:1});
 		});
 	});
 });

@@ -3,6 +3,17 @@ extends layout
 block content
 	.row
 		.span8
+			section.well.row(style='width: 490px;margin: 20px 45px;')
+				.span2
+					h5 POSTS
+					h6=posts
+				.span2
+					h5 FOLLOWERS
+					h6 --to be done--
+				.span2
+					a(href='/' + user.screen_name + '/favorites')
+						h5 FAVORITES
+						h6=favorites
 			section.row#post-listing
 				-each post in latest
 					include components/post

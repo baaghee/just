@@ -28,10 +28,10 @@ block content
 								i.icon-thumbs-down
 					img(src="/files/" + pic.pic)
 					div.post-footer
-						div.pull-left
-							a.btn.btn-small(href='#')
-								strong 20
-								| Comments
+						-if(locals.user)
+							div.pull-left
+								a.btn.btn-small.make-favorite(data-id=pic._id)
+									strong Favorite
 						div.pull-right.btn-group
 							a.btn.btn-small(href='#') FB
 							a.btn.btn-small(href='#') Twitter

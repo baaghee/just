@@ -181,6 +181,16 @@ $(function(){
     		}
     	});
     });
+    $("body").on("click", ".make-favorite", function(){
+    	var self = $(this);
+    	var id = self.data().id.replace(/\"/g, '');;
+    	$.post('/favorite', {id:id}, function(res){
+    		if(res.error){
+    			//TODO err
+    		}
+    		//TODO success
+    	});
+    });
 });
 
 

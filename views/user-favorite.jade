@@ -1,0 +1,11 @@
+extends layout
+
+block content
+	.row
+		.span8
+			section.well.row(style='width: 490px;margin: 20px 45px;')
+				h2 #{user.screen_name}'s favorites
+			section.row#post-listing
+				-each post in favorites
+					include components/post
+		include rightside
