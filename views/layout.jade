@@ -37,11 +37,11 @@ html(lang='en')
 				.container
 					a.brand(href='/') anymeme
 					ul.nav.pull-right
-						-if(locals.user){
+						-if(locals._user){
 							li
-								a(href='/' + locals.user.screen_name)
-									img(width='24', style='margin-right:10px', src="http://graph.facebook.com/"+locals.user.username+"/picture")
-									span=locals.user.screen_name
+								a(href='/' + locals._user.screen_name)
+									img(width='24', style='margin-right:10px', src="http://graph.facebook.com/"+locals._user.username+"/picture")
+									span=locals._user.screen_name
 							li.divider-vertical
 							li
 								a(href='/logout') logout

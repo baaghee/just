@@ -105,7 +105,7 @@ app.configure(function(){
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(function(req, res, next){
-	  	app.locals.user = req.user;
+	  	res.locals._user = req.user;
   		next();
 	});	
 	app.use(app.router);
