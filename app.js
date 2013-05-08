@@ -240,7 +240,7 @@ app.post('/pic', Authenticate, function(req, res){
 				likes:0,
 				dislikes:0,
 				date:new Date(),
-				//ip:'string',
+				ip:req.ip,
 				//request_headers:{}
 
 			}).save(function(err, doc){
