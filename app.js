@@ -289,6 +289,19 @@ app.get('/posts/new', function(req,res){
 		res.json(latest);
 	});
 });
+app.get('/posts/before/:id', function(req, res){
+	var id = req.params.id;
+	Pic
+	.find({_id:{$lt:id}})
+	.sort({_id:-1})
+	.limit(20)
+	.populate('user', "id screen_name username")
+	.exec(function(err, posts){
+		if(err) throw err;
+		//TODO: remove ip
+		res.json(posts);
+	});
+});
 app.post('/post/:id/approve', Authenticate, function(req, res){
 	var id = req.params.id;
 	var type = req.body.type;

@@ -166,6 +166,21 @@ $(function(){
         $("#sort-header .nav li").not().removeClass("active");
         $(this).addClass("active");
     });
+    $("#load-more-post").click(function(){
+    	var last_post = $("#post-listing .post:last").data().id.replace(/\"/g, '');
+    	$.getJSON('/posts/before/' + last_post, function(posts){
+    		if(posts.length){
+    			var html = '';
+    			posts.forEach(function(e){
+    				html += jade.render('post', {post:e});
+    			});
+    			$("#post-listing").append(html);
+    		}
+    		if(posts.length < 20){
+    			$("#load-more-post").hide();
+    		}
+    	});
+    });
 });
 
 
