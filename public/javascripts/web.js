@@ -1,4 +1,5 @@
 $(function(){
+
 	//text
 	var text_properties = {
 		text:"type something...",
@@ -206,8 +207,21 @@ $(function(){
     		//TODO success
     	});
     });
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '565414836813596',                        // App ID from the app dashboard
+			channelUrl : '//anyme.me/channel.html', // Channel file for x-domain comms
+			status     : true,                                 // Check Facebook Login status
+			xfbml      : true                                  // Look for social plugins on the page
+		});
+		FB.Event.subscribe('comment.create', function(res){
+			$.post('/fbcomment', {type:'add', data:res});
+		});   
+		FB.Event.subscribe('comment.remove', function(res){
+			$.post('/fbcomment', {type:'remove', data:res});
+		});   
+	}	
 });
-
 
 
 

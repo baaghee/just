@@ -1,13 +1,14 @@
 extends layout
 
 block content
+	-var _url = 'http://anyme.me/' + pic.username + '/' + pic._id;
 	div#fb-root
 	script(type='text/javascript')
 		(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) return;
 			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=565414836813596";
+			js.src = "//connect.facebook.net/en_US/all.js";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 	script(type='text/javascript') !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
@@ -27,7 +28,13 @@ block content
 						a(href='#')=pic.username
 						span.date 2 July 2013
 						br.clear
+					
+					span comments
 					div.post-like-menu
+						span.top-block-likes
+							strong=pic.comments
+							a.btn.btn-small.approve
+								i.icon-comment
 						span.top-block-likes
 							strong(class="like_" + pic._id)=pic.likes
 							a.btn.btn-small.approve(data-id=pic._id, data-data='like')
@@ -50,6 +57,17 @@ block content
 						br.clear
 					div
 						h4 Comments
+						fb:comments(width="580", num_posts="10", data-href=_url)
+					
+					//
+						section.comments
+							section.comment.row
+								div.span1
+									img(src='http://graph.facebook.com/iulogy/picture')
+									span iulogy
+								div.span5
+									p The function does not return any value, but modifies the content of the array pointed by base reordering its elements as defined by compar.
+					//	
 						#disqus_thread
 							script(type='text/javascript')
 									var disqus_shortname = 'anymeme'; // required: replace example with your forum shortname

@@ -1,5 +1,9 @@
 .post-like-menu
 	span.top-block-likes
+		strong=post.comments
+		a.btn.btn-small.approve
+			i.icon-comment
+	span.top-block-likes
 		strong(class="like_" + post._id)=post.likes
 		a.btn.btn-small.approve(data-id=post._id, data-data='like')
 			i.icon-thumbs-up 

@@ -323,6 +323,12 @@ app.get('/posts/new', function(req,res){
 		res.json(latest);
 	});
 });
+app.get('/channel.html', function(req, res){
+	res.setHeader("Pragma: public");
+	res.setHeader("Cache-Control", "max-age=" + (60*60*24*3655));
+	res.setHeader('Expires', 'Fri, 10 May 2020 15:33:44 GMT');
+	res.end('<script src="//connect.facebook.net/en_US/all.js"></script>');
+});
 app.get('/posts/before/:id', function(req, res){
 	var id = req.params.id;
 	Pic
@@ -335,6 +341,16 @@ app.get('/posts/before/:id', function(req, res){
 		//TODO: remove ip
 		res.json(posts);
 	});
+});
+app.post('/fbcomment', function(req, res){
+	if(!req.body.data && !req.body.data.href){
+		return res.end();
+	}
+	var id = req.body.data.href.split("/").pop();
+	var val = req.body.type == 'add' ? 1 : -1;
+	Pic.update({_id:id}, {$inc:{comments:val}}, function(err, changed){
+	});
+	res.end();
 });
 app.post('/post/:id/approve', Authenticate, function(req, res){
 	var id = req.params.id;
