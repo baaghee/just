@@ -1,9 +1,9 @@
 .post(data-id=post._id)
 	-var _url = 'http://anyme.me/' + post.user.username + '/' + post._id;
 	.post-head
-		img(src="http://graph.facebook.com/"+post.user.username+"/picture")
+		img(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
 		a(href='/' + post.user.screen_name)=post.user.screen_name
-		span.date 2 July 2013
+		span.date(title=moment(post.date).format('LLLL'))=moment(post.date).fromNow()
 		br.clear
 	include ../like
 	a(href='/' + post.user.screen_name + '/' + post._id)

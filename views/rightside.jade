@@ -6,6 +6,6 @@
 				-each post in popular
 					li(style='position: relative;')
 						a(href='/' + post.user.screen_name + '/' + post._id)
-							img.span2(src='/files/260' + post.pic, style='width: 260px;')
+							img.span2(src='/files/260' + post.pic, width='260', height='216')
 						include minilike
 						br.clear

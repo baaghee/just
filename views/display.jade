@@ -25,11 +25,9 @@ block content
 				div.big-post
 					div.post-head
 						img(src="http://graph.facebook.com/"+pic.user.username+"/picture")
-						a(href='#')=pic.username
-						span.date 2 July 2013
+						a(href='/' + pic.user.screen_name)=pic.user.screen_name
+						span.date(title=moment(pic.date).format('LLLL'))=moment(pic.date).fromNow()
 						br.clear
-					
-					span comments
 					div.post-like-menu
 						span.top-block-likes
 							strong=pic.comments

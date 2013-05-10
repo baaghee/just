@@ -16,9 +16,9 @@ var express = require('express')
   , fb = require('fb')
   , async = require('async')
   , gm = require('gm')
-  , moment = require('moment')
   , md5 = require('MD5')
 
+moment = require('moment');
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection('localhost', 'anymeme');
