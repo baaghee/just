@@ -90,7 +90,7 @@ $(function(){
 
 		}
 		if(type == 'text'){
-			if(!img || !!text_properties.bgColor){
+			if(!img || text_properties.bgColor){
 				$("canvas").drawRect({
 				  fillStyle: text_properties.bgColor,
 				  x: 0, y: 0,
