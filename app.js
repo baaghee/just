@@ -313,6 +313,8 @@ app.post('/pic', Authenticate, function(req, res){
 					.findOne({_id:doc._id})
 					.populate('user', "id screen_name username")
 					.exec(function(err, pic){
+						if(err) throw err;
+						res.json(pic);
 					});
 			
 					if(argv.skipfb){
