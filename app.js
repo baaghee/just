@@ -19,6 +19,11 @@ var express = require('express')
   , md5 = require('MD5')
   , racker = require('racker')
 moment = require('moment');
+cdn_url = 'http://e7026f8f16c0bcf6d100-23fa34ac10b738921d65a145768427b6.r66.cf1.rackcdn.com';
+racker
+.set('user', 'maldivianist')
+.set('key', '453bfb34869c3340d621d82b9a9e278c');
+
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection('127.0.0.1', 'anymeme');
@@ -245,34 +250,12 @@ app.post('/pic', Authenticate, function(req, res){
 		}
 
 		var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
-		
-		var buf = new Buffer(pic, 'base64');
-		gm(buf, 'img.jpg')
-		.resize('200', '200')
-		.toBuffer(function(err, buffer){
-			
-			racker
-			.set('user', 'maldivianist')
-			.set('key', '453bfb34869c3340d621d82b9a9e278c')
-			.upload(buffer)
-			.to('anymeme')
-			.as('XXXX.jpg')
-			.on('progress', console.log)
-			.end(console.log);
-		});
-		//.toBuffer(console.log);
-		
 		var hash = md5(pic);
 		Pic.count({md5:hash}, function(err, count){
 			if(err) throw err;
 			if(count > 0){
 				return res.json({error:"Already posted"});
 			}
-			var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
-			var f_name = file_name_seed + '.png';
-			var file_name = __dirname + "/public/files/" + f_name;
-		
-	
 			/*var c = new canvas(580,480);
 			ctx = c.getContext('2d');
 			ctx.font = '30px "Baroque Script"';
@@ -281,7 +264,38 @@ app.post('/pic', Authenticate, function(req, res){
 			fs.writeFile('./test.png', pic, 'base64', function(err) {
 
 			});*/
-			fs.writeFile(file_name, pic, 'base64', function(err) {
+			var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
+			var f_name = file_name_seed + '.jpg';
+
+			//resizing
+			async.parallel([
+				function(fn){
+					var buf = new Buffer(pic, 'base64');
+					gm(buf, f_name + '.jpg')
+					.toBuffer(function(err, buffer){
+						racker
+						.upload(buffer)
+						.to('anymeme')
+						.as(f_name)
+						.on('progress', console.log)
+						.end(fn);
+					});
+				},
+				function(fn){
+					var buf = new Buffer(pic, 'base64');
+					gm(buf, f_name + '.jpg')
+					.resize(260,215)
+					.toBuffer(function(err, buffer){
+						racker
+						.upload(buffer)
+						.to('anymeme')
+						.as("medium_" + f_name)
+						.on('progress', console.log)
+						.end(fn);
+					});
+				
+				}
+			],function(err, done){
 				if(err) throw err;
 				new Pic({
 					user:req.user._id,
@@ -299,14 +313,6 @@ app.post('/pic', Authenticate, function(req, res){
 					.findOne({_id:doc._id})
 					.populate('user', "id screen_name username")
 					.exec(function(err, pic){
-						if(err) throw err;
-						//resize
-						gm(file_name)
-						.resize(260,260)
-						.write( __dirname + "/public/files/" + 260 + f_name, function(err){
-							if(err) throw err;
-							res.json(pic);
-						});
 					});
 			
 					if(argv.skipfb){
@@ -329,6 +335,7 @@ app.post('/pic', Authenticate, function(req, res){
 					}
 			
 				});        
+
 			});
 		});
 	});
