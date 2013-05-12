@@ -17,14 +17,7 @@ var express = require('express')
   , async = require('async')
   , gm = require('gm')
   , md5 = require('MD5')
-  , pkgcloud = require('pkgcloud')
-
-var rackspace = pkgcloud.storage.createClient({
-	provider: 'rackspace',
-	username: 'maldivianist',
-	apiKey: '453bfb34869c3340d621d82b9a9e278c'
-});
-
+  , racker = require('racker')
 moment = require('moment');
 //DB
 mongoose = require('mongoose');
@@ -243,7 +236,7 @@ app.post('/test/', function(req, res){
     	}
     }
 });
-var util = require('util');
+
 app.post('/pic', Authenticate, function(req, res){
 	Pic.count({user:req.user._id, date:{$gt:moment().subtract('hours',1)}}, function(err, count){
 		if(err) throw err;
@@ -252,6 +245,23 @@ app.post('/pic', Authenticate, function(req, res){
 		}
 
 		var pic = req.body.pic.replace(/^data:image\/png;base64,/,"");
+		
+		var buf = new Buffer(pic, 'base64');
+		gm(buf, 'img.jpg')
+		.resize('200', '200')
+		.toBuffer(function(err, buffer){
+			
+			racker
+			.set('user', 'maldivianist')
+			.set('key', '453bfb34869c3340d621d82b9a9e278c')
+			.upload(buffer)
+			.to('anymeme')
+			.as('XXXX.jpg')
+			.on('progress', console.log)
+			.end(console.log);
+		});
+		//.toBuffer(console.log);
+		
 		var hash = md5(pic);
 		Pic.count({md5:hash}, function(err, count){
 			if(err) throw err;
@@ -273,12 +283,6 @@ app.post('/pic', Authenticate, function(req, res){
 			});*/
 			fs.writeFile(file_name, pic, 'base64', function(err) {
 				if(err) throw err;
-				fs.createReadStream(file_name).pipe(rackspace.upload({
-					container: 'anymeme',
-					remote: f_name
-				}, function(err, res){
-					console.log(util.inspect(arguments, { showHidden: true, depth: 6 }));
-				}));				
 				new Pic({
 					user:req.user._id,
 					pic: f_name,
