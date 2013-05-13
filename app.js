@@ -316,8 +316,7 @@ app.post('/pic', Authenticate, function(req, res){
 						if(err) throw err;
 						res.json(pic);
 					});
-			
-					if(argv.skipfb){
+					if(argv.skipfb || req.body.post_fb == false){
 						return;
 					}
 					if(req.body.post_fb){

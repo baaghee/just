@@ -2,6 +2,7 @@ header#sub-header.navbar
 	nav.navbar-inner
 		.container
 			form#post-form.form-search.pull-right
+				a#upload-image.btn(href='#') Two row
 				#any-textarea
 					textarea#input(rows='3', placeholder='Type to generate image')
 				#meme-textarea
@@ -103,6 +104,9 @@ header#sub-header.navbar
 							li(data-attribute='red')
 								a(role='menuitem', tabindex='-1')
 									div(style='background:red') &nbsp 
+					div.btn-group(data-toggle="buttons-checkbox")
+						button.btn(type='button', title='Alpha')#change-canvas-alpha A
+						button.btn(type='button', title='Text shadow')#change-canvas-textshadow.active S
 				#upload-menu.pull-left
 					div.fileupload.fileupload-new(data-provides='fileupload')
 						span.btn.btn-file
@@ -110,8 +114,10 @@ header#sub-header.navbar
 							span.fileupload-exists Change
 							input(type='file')#file
 				#post-btn.pull-right
-					a#upload-image.btn(href='#') Image
 					a.btn#submit Post
+				section.pull-right
+					input(type='checkbox', checked="checked")#post-to-fb
+					span Post to Facebook
 		section
 			canvas(height="480", width="580", style='margin-bottom:15px;display:none;border:solid 1px #f0f0f0')
 header#sort-header.navbar

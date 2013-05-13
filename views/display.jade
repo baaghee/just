@@ -41,7 +41,7 @@ block content
 							strong(class="dislike_" + pic._id)=pic.dislikes
 							a.btn.btn-small.approve(data-id=pic._id, data-data='dislike')
 								i.icon-thumbs-down
-					img(src="/files/" + pic.pic)
+					img(src=cdn_url+"/" + pic.pic)
 					div.post-footer
 						-if(locals.user)
 							div.pull-left

@@ -1,3 +1,4 @@
+cdn_url = 'http://e7026f8f16c0bcf6d100-23fa34ac10b738921d65a145768427b6.r66.cf1.rackcdn.com';
 $(function(){
 
 	//text
@@ -14,7 +15,7 @@ $(function(){
     var bgColor;
     var size;
     var type = 'text';
-
+    var alpha = false;
     //pic    
 	var img;
 	
@@ -54,8 +55,8 @@ $(function(){
         e.preventDefault();
         var image = $("canvas");
         var img = image.getCanvasImage('png');
-        
-        $.post('/pic', {pic:img}, function(res){
+        var post_fb = $("#post-to-fb").is(":checked");
+        $.post('/pic', {pic:img, post_fb:post_fb}, function(res){
         	if(res.error){
         		alert(res.error);
         		return;
@@ -89,6 +90,7 @@ $(function(){
 			});
 
 		}
+
 		if(type == 'text'){
 			if(!img || text_properties.bgColor){
 				$("canvas").drawRect({
@@ -99,7 +101,16 @@ $(function(){
 				  fromCenter: false
 				});
 			}
+			if(alpha == true){
+				$("canvas").drawRect({
+				  fillStyle: "rgba(0,0,0,.5)",
+				  x: 0, y: 0,
+				  width: 4000,
+				  height: 4000,
+				  fromCenter: false
+				});			
 
+			}
 			$("canvas").drawText({
 				fillStyle: text_properties.textColor,
 				strokeWidth: 2,
@@ -107,7 +118,7 @@ $(function(){
 				align: "center",
 				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
 				maxWidth: 580,
-				shadowColor: "#fff",
+				shadowColor: (shadow == true ? "#fff" : ""),
 				shadowBlur: 10,
 				shadowX: 0,
 				shadowY: 0,			  
@@ -115,10 +126,9 @@ $(function(){
 				text: text
 			});
 		}else if(type=='image'){
-			
 	        $("canvas").drawText({
-	          fillStyle: "#000",
-	          strokeStyle: "#fff",
+	          fillStyle: "#fff",
+	          strokeStyle: "#000",
 	          strokeWidth: 1,
 	          x: 290, y: 400,
 	          align: "center",
@@ -126,9 +136,19 @@ $(function(){
 	          maxWidth: 580,
 	          text: $("#bot-input").val()
 	        });
+			if(alpha == true){
+				$("canvas").drawRect({
+				  fillStyle: "rgba(0,0,0,.5)",
+				  x: 0, y: 0,
+				  width: 4000,
+				  height: 4000,
+				  fromCenter: false
+				});			
+
+			}
 	        $("canvas").drawText({
-	          fillStyle: "#000",
-	          strokeStyle: "#fff",
+	          fillStyle: "#fff",
+	          strokeStyle: "#000",
 	          strokeWidth: 1,
 	          x: 290, y: 70,
 	          align: "center",
@@ -136,6 +156,7 @@ $(function(){
 	          maxWidth: 580,
 	          text: $("#top-input").val()
 	        });
+	       
 		}
 	}
     $("#top-input").keyup(function(e){
@@ -206,6 +227,22 @@ $(function(){
     		}
     		//TODO success
     	});
+    });
+    $("#change-canvas-alpha").click(function(){
+    	if($(this).hasClass("active")){
+    		alpha = false;
+    	}else{
+    		alpha = true;
+    	}
+    	render();
+    });
+    $("#change-canvas-textshadow").click(function(){
+    	if($(this).hasClass("active")){
+    		shadow = false;
+    	}else{
+    		shadow = true;
+    	}
+    	render();
     });
 	window.fbAsyncInit = function() {
 		FB.init({
