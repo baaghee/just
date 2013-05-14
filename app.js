@@ -326,7 +326,7 @@ app.post('/pic', Authenticate, function(req, res){
 							{
 								link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
 								caption: 'New post by ' + req.user.screen_name,
-								picture: 'http://anyme.me/files/' + f_name, 
+								picture: cdn_url + '/' + f_name, 
 								message:'testing',
 								access_token:req.user.accessToken
 							}, function(res){

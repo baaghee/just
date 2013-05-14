@@ -4,10 +4,10 @@ $(function(){
 	//text
 	var text_properties = {
 		text:"type something...",
-		textColor:"black",
+		textColor:"white",
 		bgColor:"orange",
-		size:"14px",
-		font: "Arial"
+		size:"38px",
+		font: 'Days One'
 	}
 	var shadow = true;
     var text;
@@ -118,8 +118,50 @@ $(function(){
 				align: "center",
 				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
 				maxWidth: 580,
-				shadowColor: (shadow == true ? "#fff" : ""),
+				shadowColor: (shadow == true ? "#000" : ""),
 				shadowBlur: 10,
+				shadowX: 0,
+				shadowY: 0,			  
+				maxWidth: 580,
+				text: text
+			});
+			$("canvas").drawText({
+				fillStyle: text_properties.textColor,
+				strokeWidth: 2,
+				x: 290, y: 220,
+				align: "center",
+				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
+				maxWidth: 580,
+				shadowColor: (shadow == true ? "#000" : ""),
+				shadowBlur: 20,
+				shadowX: 0,
+				shadowY: 0,			  
+				maxWidth: 580,
+				text: text
+			});
+			$("canvas").drawText({
+				fillStyle: text_properties.textColor,
+				strokeWidth: 2,
+				x: 290, y: 220,
+				align: "center",
+				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
+				maxWidth: 580,
+				shadowColor: (shadow == true ? "#000" : ""),
+				shadowBlur: 50,
+				shadowX: 0,
+				shadowY: 0,			  
+				maxWidth: 580,
+				text: text
+			});
+			$("canvas").drawText({
+				fillStyle: text_properties.textColor,
+				strokeWidth: 2,
+				x: 290, y: 220,
+				align: "center",
+				font: text_properties.size + " '"+text_properties.font+"', sans-serif",
+				maxWidth: 580,
+				shadowColor: (shadow == true ? "#000" : ""),
+				shadowBlur: 50,
 				shadowX: 0,
 				shadowY: 0,			  
 				maxWidth: 580,
