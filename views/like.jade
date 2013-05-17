@@ -1,4 +1,7 @@
 .post-like-menu
+	-if(locals._user && post.user._id.toString() == locals._user._id.toString())
+		button.btn.remove-post(type='button', data-id=post._id)
+			i.icon-remove
 	span.top-block-likes
 		strong=post.comments
 		a.btn.btn-small.approve

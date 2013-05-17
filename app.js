@@ -304,7 +304,8 @@ app.post('/pic', Authenticate, function(req, res){
 					dislikes:0,
 					date:new Date(),
 					ip:req.ip,
-					md5:hash
+					md5:hash,
+					private:req.body.private
 					//request_headers:{}
 
 				}).save(function(err, doc){
@@ -464,6 +465,26 @@ app.post('/favorite', Authenticate, function(req, res){
 		});
 	});
 });
+app.post('/remove-post', Authenticate, function(req, res){
+	var id = req.body.id;
+	if(!id){
+		return res.json({error:'id not sent'});
+	}
+	//remove if post belongs to user
+	Pic.remove({_id:id, user:req.user._id}, function(err, num){
+		if(err) throw err;
+		if(num == 1){
+			return res.json({message:"removed pic"});
+		}
+		return res.json({error:"You're not authorized to do this!"});
+		
+	});
+});
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+
+
+
+

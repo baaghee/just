@@ -15,5 +15,8 @@ block content
 						strong=favorites
 			section.row#post-listing
 				-each post in latest
-					include components/post
+					-if(locals._user && post.user._id.toString() == locals._user._id.toString())
+						include components/post
+					-else if(post.private == false)
+						include components/post
 		include rightside

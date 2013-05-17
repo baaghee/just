@@ -67,7 +67,8 @@ $(function(){
         var image = $("canvas");
         var img = image.getCanvasImage('png');
         var post_fb = $("#post-to-fb").is(":checked");
-        $.post('/pic', {pic:img, post_fb:post_fb}, function(res){
+        var private = $("#post-private").is(":checked");
+        $.post('/pic', {pic:img, post_fb:post_fb, private:private}, function(res){
         	if(res.error){
         		alert(res.error);
         		return;
@@ -297,6 +298,16 @@ $(function(){
     		shadow = true;
     	}
     	render();
+    });
+    $("body").on('click', ".remove-post", function(){
+    	var id = $(this).data().id.replace(/\"/g, '');
+    	var self = $(this);
+    	$.post('/remove-post', {id:id}, function(res){
+    		if(res.error){
+    			return alert(res.error);
+    		}
+    		self.parent().parent().slideUp();
+    	});
     });
 	window.fbAsyncInit = function() {
 		FB.init({
