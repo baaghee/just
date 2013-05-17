@@ -5,11 +5,11 @@ $(function(){
 	var text_properties = {
 		text:"type something...",
 		textColor:"white",
-		bgColor:"orange",
+		bgColor:"red",
 		size:"38px",
-		font: 'Days One'
+		font: 'Oswald'
 	}
-	var shadow = true;
+	var shadow = false;
     var text;
     var textColor;
     var bgColor;
@@ -18,7 +18,18 @@ $(function(){
     var alpha = false;
     //pic    
 	var img;
-	
+	$("#clear").click(function(){
+		shadow = false;
+		alpha = false;
+		text_properties = {
+			text:"type something...",
+			textColor:"white",
+			bgColor:"red",
+			size:"38px",
+			font: 'Oswald'
+		}
+		render();
+	});
     $("body").on("click", ".change-canvas-attribute li", function(){
     	var self = $(this);
     	var role = self.parent().attr("data-role"); 
@@ -168,16 +179,6 @@ $(function(){
 				text: text
 			});
 		}else if(type=='image'){
-	        $("canvas").drawText({
-	          fillStyle: "#fff",
-	          strokeStyle: "#000",
-	          strokeWidth: 1,
-	          x: 290, y: 400,
-	          align: "center",
-	          font: "bold 40px Verdana, sans-serif",
-	          maxWidth: 580,
-	          text: $("#bot-input").val()
-	        });
 			if(alpha == true){
 				$("canvas").drawRect({
 				  fillStyle: "rgba(0,0,0,.5)",
@@ -188,6 +189,16 @@ $(function(){
 				});			
 
 			}
+	        $("canvas").drawText({
+	          fillStyle: "#fff",
+	          strokeStyle: "#000",
+	          strokeWidth: 1,
+	          x: 290, y: 400,
+	          align: "center",
+	          font: "bold 40px Verdana, sans-serif",
+	          maxWidth: 580,
+	          text: $("#bot-input").val()
+	        });
 	        $("canvas").drawText({
 	          fillStyle: "#fff",
 	          strokeStyle: "#000",
@@ -236,6 +247,7 @@ $(function(){
             $("#meme-textarea").fadeIn();
             $(this).addClass('active');
         }
+        render();
     });
 
     $('.tool').tooltip();

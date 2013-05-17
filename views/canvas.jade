@@ -3,6 +3,7 @@ header#sub-header.navbar
 		.container
 			form#post-form.form-search.pull-right
 				a#upload-image.btn(href='#') Two row
+				a.btn#clear Clear
 				#any-textarea
 					textarea#input(rows='3', placeholder='Type to generate image')
 				#meme-textarea
@@ -14,14 +15,24 @@ header#sub-header.navbar
 							i.icon-font
 							span.caret
 						ul.dropdown-menu.change-canvas-attribute(data-role='font')
+							li(data-attribute="Oswald")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Oswald', sans-serif;") Oswald
 							li(data-attribute="Days One")
 								a(role='menuitem', tabindex='-1', style="font-family: 'Days One', sans-serif;") Days One
-							li(data-attribute="Press Start 2P")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Press Start 2P', sans-serif;") Press Start 2P
-							li(data-attribute="Karla")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Karla', sans-serif;") Karla
-							li(data-attribute="Grand Hotel")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Grand Hotel', sans-serif;") Karla
+							li(data-attribute="Philosopher")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Philosopher', sans-serif;") Philosopher
+							li(data-attribute="Iceberg")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Iceberg', sans-serif;") Iceberg
+							li(data-attribute="Abril Fatface")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Abril Fatface', sans-serif;") Abril Fatface
+							li(data-attribute="Lobster Two")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Lobster Two', sans-serif;") Lobster Two
+							li(data-attribute="Maiden Orange")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Maiden Orange', sans-serif;") Maiden Orange
+							li(data-attribute="Rancho")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Rancho', sans-serif;") Rancho
+							li(data-attribute="Varela Round")
+								a(role='menuitem', tabindex='-1', style="font-family: 'Varela Round', sans-serif;") Varela Round
 					.btn-group
 						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Size')
 							i.icon-text-width
@@ -106,7 +117,7 @@ header#sub-header.navbar
 									div(style='background:red') &nbsp 
 					div.btn-group(data-toggle="buttons-checkbox")
 						button.btn(type='button', title='Alpha')#change-canvas-alpha A
-						button.btn(type='button', title='Text shadow')#change-canvas-textshadow.active S
+						button.btn(type='button', title='Text shadow')#change-canvas-textshadow S
 				#upload-menu.pull-left
 					div.fileupload.fileupload-new(data-provides='fileupload')
 						span.btn.btn-file
