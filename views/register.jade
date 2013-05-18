@@ -2,7 +2,29 @@ extends layout
 
 block content
 	div#main-container.container
-		form(method='post', action='/register')
+		form(method='post', action='/register')#register.well.form-search
 			h1 select a name
-			input(type='text', value=username, name='screen_name')
-			input(type='submit').btn update
+			input(type='text', value=username, name='screen_name')#screen_name
+			input(type='submit', value='Update').btn
+			section
+				span http://anyme.me/
+				span#screen_name_display
+	script(type='text/javascript')
+		$(function(){
+			$("#screen_name").keyup(function(){
+				var val = $(this).val();
+				var col;
+				if($("#screen_name").val().match(/^[A-z]+$/) == null){
+					col = 'red';
+				}else{
+					col = 'green';
+				}
+				$("#screen_name_display").text(val).css("color", col);
+			});
+			$("#register").submit(function(e){
+				if($("#screen_name").val().match(/^[A-z]+$/) == null){
+					e.preventDefault();
+					
+				}
+			});
+		});

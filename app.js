@@ -76,7 +76,9 @@ function ScreenNameExists(name, fn){
 		fn(exists != null);
 	});
 };
-
+function validName(name){
+	return name.match(/^[A-z]+$/) != null;
+}
 function Authenticate(req,res,next){
   if (req.isAuthenticated()) { return next(); }
  	 return res.redirect('/');
@@ -132,6 +134,9 @@ app.get('/register', Authenticate, function(req,res){
 });
 app.post('/register',  function(req, res){
 	var screen_name = req.body.screen_name;
+	if(!validName){
+		return res.json({error:"Invalid username!"});
+	}
 	ScreenNameExists(screen_name, function(exists){
 		if(exists){
 			return res.redirect('/');

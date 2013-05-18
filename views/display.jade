@@ -2,6 +2,7 @@ extends layout
 
 block content
 	-var _url = 'http://anyme.me/' + pic.username + '/' + pic._id;
+	-var post = pic;
 	div#fb-root
 	script(type='text/javascript')
 		(function(d, s, id) {
@@ -28,22 +29,10 @@ block content
 						a(href='/' + pic.user.screen_name)=pic.user.screen_name
 						span.date(title=moment(pic.date).format('LLLL'))=moment(pic.date).fromNow()
 						br.clear
-					div.post-like-menu
-						span.top-block-likes
-							strong=pic.comments
-							a.btn.btn-small.approve
-								i.icon-comment
-						span.top-block-likes
-							strong(class="like_" + pic._id)=pic.likes
-							a.btn.btn-small.approve(data-id=pic._id, data-data='like')
-								i.icon-thumbs-up 
-						span.top-block-dislikes
-							strong(class="dislike_" + pic._id)=pic.dislikes
-							a.btn.btn-small.approve(data-id=pic._id, data-data='dislike')
-								i.icon-thumbs-down
+					include like
 					img(src=cdn_url+"/" + pic.pic)
 					div.post-footer
-						-if(locals.user)
+						-if(locals._user)
 							div.pull-left
 								a.btn.btn-small.make-favorite(data-id=pic._id)
 									strong Favorite
