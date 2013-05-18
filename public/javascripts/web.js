@@ -306,6 +306,11 @@ $(function(){
     		if(res.error){
     			return alert(res.error);
     		}
+    		var pagename = typeof pagename != 'undefined' ? pagename : "";
+    		if(pagename == 'display'){
+    			window.location = window.location.origin + "/" + res.user;
+    			return;
+    		}
     		self.parent().parent().slideUp();
     	});
     });

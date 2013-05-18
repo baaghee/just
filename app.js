@@ -479,7 +479,7 @@ app.post('/remove-post', Authenticate, function(req, res){
 	Pic.remove({_id:id, user:req.user._id}, function(err, num){
 		if(err) throw err;
 		if(num == 1){
-			return res.json({message:"removed pic"});
+			return res.json({message:"removed pic", user:req.user.screen_name});
 		}
 		return res.json({error:"You're not authorized to do this!"});
 		

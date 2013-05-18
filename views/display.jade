@@ -5,6 +5,7 @@ block content
 	-var post = pic;
 	div#fb-root
 	script(type='text/javascript')
+		pagename = "display";
 		(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) return;
@@ -44,8 +45,7 @@ block content
 						br.clear
 					div
 						h4 Comments
-						fb:comments(width="580", num_posts="10", data-href=_url)
-					
+						fb:comments(width="580", num_posts="10", data-href=_url)					
 					//
 						section.comments
 							section.comment.row
