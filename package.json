@@ -1,9 +1,9 @@
 {
   "name": "anymeme",
-  "version": "0.0.2",
-  "subdomain":"anymeme",
+  "version": "0.0.2-1",
+  "subdomain": "anymeme",
   "scripts": {
-    "start": "node app"
+    "start": "node app.js"
   },
   "dependencies": {
     "express": "3.0.6",
@@ -24,5 +24,8 @@
     "gm": "~1.9.0",
     "MD5": "~1.0.3",
     "racker": "0.0.1-alpha3"
+  },
+  "engines": {
+    "node": "0.8.x"
   }
 }
