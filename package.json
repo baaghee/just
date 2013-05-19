@@ -1,7 +1,7 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "private": true,
+  "name": "anymeme",
+  "version": "0.0.2",
+  "subdomain":"anymeme",
   "scripts": {
     "start": "node app"
   },
@@ -23,7 +23,6 @@
     "async": "~0.2.8",
     "gm": "~1.9.0",
     "MD5": "~1.0.3",
-    "racker": "0.0.1-alpha3",
-    "subdomain":"anymeme"
+    "racker": "0.0.1-alpha3"
   }
 }
