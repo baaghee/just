@@ -26,12 +26,12 @@ racker
 
 //DB
 mongoose = require('mongoose');
-db = mongoose.createConnection('127.0.0.1', 'anymeme');
+db = mongoose.createConnection('mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307');
 
 var User = require('./lib/User');    
 var Pic = require('./lib/Pic');    
 
-var sessionStore = new MongoStore({db:'anymeme'}); 
+var sessionStore = new MongoStore({url:"mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307"}); 
  
 passport.use(new FacebookStrategy({
 		clientID: "565414836813596",
