@@ -270,79 +270,89 @@ app.post('/pic', Authenticate, function(req, res){
 
 			});*/
 			var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
-			var f_name = file_name_seed + '.jpg';
-
-			//resizing
-			async.parallel([
-				function(fn){
-					var buf = new Buffer(pic, 'base64');
-					gm(buf, f_name + '.jpg')
-					.toBuffer(function(err, buffer){
-						racker
-						.upload(buffer)
-						.to('anymeme')
-						.as(f_name)
-						.on('progress', console.log)
-						.end(fn);
-					});
-				},
-				function(fn){
-					var buf = new Buffer(pic, 'base64');
-					gm(buf, f_name + '.jpg')
-					.resize(260,215)
-					.toBuffer(function(err, buffer){
-						racker
-						.upload(buffer)
-						.to('anymeme')
-						.as("medium_" + f_name)
-						.on('progress', console.log)
-						.end(fn);
-					});
+			var f_name = file_name_seed + '.png';
+			var jpg_name = file_name_seed + '.jpg';
+			var tempfolder = "./public/files/" ;
+			var temppath = tempfolder + f_name;
+			var jpgtemppath = tempfolder + file_name_seed + ".jpg";
+			fs.writeFile(temppath, pic, 'base64', function(err) {
+				//convert to jpg
+				gm(temppath)
+				.write(jpgtemppath, function (err) {
+					if (!err) console.log('done');
+					//resizing
+					async.parallel([
+						function(fn){
+							racker
+							.upload(jpgtemppath)
+							.to('anymeme')
+							.as(jpg_name)
+							.on('progress', console.log)
+							.end(fn);
+						},
+						function(fn){
+							gm(jpgtemppath)
+							.resize(260,215)
+							.toBuffer(function(err, buffer){
+								racker
+								.upload(buffer)
+								.to('anymeme')
+								.as("medium_" + jpg_name)
+								.on('progress', console.log)
+								.end(fn);
+							});
 				
-				}
-			],function(err, done){
-				if(err) throw err;
-				new Pic({
-					user:req.user._id,
-					pic: f_name,
-					likes:0,
-					dislikes:0,
-					date:new Date(),
-					ip:req.ip,
-					md5:hash,
-					private:req.body.private
-					//request_headers:{}
-
-				}).save(function(err, doc){
-					if(err) throw err;
-					Pic
-					.findOne({_id:doc._id})
-					.populate('user', "id screen_name username")
-					.exec(function(err, pic){
+						}
+					],function(err, done){
 						if(err) throw err;
-						res.json(pic);
-					});
-					if(argv.skipfb || req.body.post_fb == false){
-						return;
-					}
-					if(req.body.post_fb){
-						fb.api(
-							'me/feed', 
-							'post',
-							{
-								link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
-								caption: 'New post by ' + req.user.screen_name,
-								picture: cdn_url + '/' + f_name, 
-								message:'testing',
-								access_token:req.user.accessToken
-							}, function(res){
-								console.log(res);
-							}
-						);
-					}
-			
-				});        
+						new Pic({
+							user:req.user._id,
+							pic: jpg_name,
+							likes:0,
+							dislikes:0,
+							date:new Date(),
+							ip:req.ip,
+							md5:hash,
+							private:req.body.private,
+							text:req.body.text
+							//request_headers:{}
 
+						}).save(function(err, doc){
+							if(err) throw err;
+							//delete temp files
+							fs.unlink(jpgtemppath, function(){});
+							fs.unlink(temppath, function(){});
+							
+							Pic
+							.findOne({_id:doc._id})
+							.populate('user', "id screen_name username")
+							.exec(function(err, pic){
+								if(err) throw err;
+								res.json(pic);
+							});
+							req.body.post_fb = req.body.post_fb == "true" ? true : false;
+							if(argv.skipfb || req.body.post_fb == false){
+								return;
+							}
+							if(req.body.post_fb == true){
+								fb.api(
+									'me/feed', 
+									'post',
+									{
+										link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
+										caption: 'New post by ' + req.user.screen_name,
+										picture: cdn_url + '/' + jpg_name, 
+										message:'testing',
+										access_token:req.user.accessToken
+									}, function(res){
+										console.log(res);
+									}
+								);
+							}
+			
+						});        
+					});
+				});
 			});
 		});
 	});
