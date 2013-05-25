@@ -314,6 +314,24 @@ $(function(){
     		self.parent().parent().slideUp();
     	});
     });
+    $("body").on('click', '.fetch-posts', function(){
+    	var url = $(this).data().url;
+    	$.getJSON('/posts/following', function(posts){
+    		$("#post-listing").html('');
+    		if(posts.length){
+    			var html = '';
+    			posts.forEach(function(e){
+    				html += jade.render('post', {post:e});
+    			});
+    			$("#post-listing").append(html);
+    		}else{
+    			$("#post-listing").html('<h2 style="text-align:center">No posts!</h2>');
+    		}
+    		if(posts.length < 20){
+    			$("#load-more-post").hide();
+    		}
+    	});
+    });
 	window.fbAsyncInit = function() {
 		FB.init({
 			appId      : '565414836813596',                        // App ID from the app dashboard

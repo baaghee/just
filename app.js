@@ -4,7 +4,7 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
+  , _ = require('underscore')
   , http = require('http')
   , jade_browser = require('jade-browser')
   , path = require('path')
@@ -24,14 +24,15 @@ racker
 .set('user', 'maldivianist')
 .set('key', '453bfb34869c3340d621d82b9a9e278c');
 
+var db_path = argv.localdb ? "mongodb://127.0.0.1:27017/anymeme" : 'mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307';
 //DB
 mongoose = require('mongoose');
-db = mongoose.createConnection('mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307');
+db = mongoose.createConnection(db_path);
 
 var User = require('./lib/User');    
 var Pic = require('./lib/Pic');    
 
-var sessionStore = new MongoStore({url:"mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307"}); 
+var sessionStore = new MongoStore({url:db_path}); 
  
 passport.use(new FacebookStrategy({
 		clientID: "565414836813596",
@@ -181,48 +182,6 @@ app.get('/', function(req,res){
 	}, function(err, docs){
 		res.render('index',docs);
 	});
-});
-app.get('/:user/favorites', function(req,res){
-	User.findOne({username:req.params.user}, function(err, user){
-		if(err) throw err;
-		if(!user){
-			return res.end('TODO: 404 page');
-		}
-		async.auto({
-			popular:function(fn){
-				Pic.popular(fn);
-			},
-			favorites:function(fn){
-				Pic
-				.find({'favorited.user':user._id}, {approvals:0, favorited:0, ip:0, request_headers:0})
-				.sort({_id:-1})
-				.limit(20)
-				.populate('user', "id screen_name username")
-				.exec(fn);
-			}
-		}, function(err, docs){
-			if (err) throw err;
-			docs.title = user.screen_name + " favorite posts on Anyme.me!";
-			docs.user = user;
-			res.render('user-favorite',docs);
-		});
-	});
-});
-app.get('/:user/:pic', function(req,res){
-	//find latest posts
-	var id = req.params.pic;
-	Pic
-	.findOne({_id:id})
-	.populate('user', "id screen_name username")
-	.exec(function(err, pic){
-		if(err) throw err;
-		if(pic){
-			//increment views
-			Pic.update({_id:id},{$inc:{views:1}}, function(err){});
-			res.render('display', {pic:pic, title:pic.user.screen_name + " on Anyme.me"});
-		}
-	});
-	
 });
 app.post('/test/', function(req, res){
     var type = req.body.type;
@@ -383,6 +342,29 @@ app.get('/posts/before/:id', function(req, res){
 		res.json(posts);
 	});
 });
+app.get('/posts/following', Authenticate, function(req, res){
+	var id = req.user._id;
+	//find following
+	User.findOne({_id:id},{following_l:1, 'following_l.user':1}, function(err, following){
+		if(err) throw err;
+
+		var following = following.following_l;
+		if(!following){
+			return res.json([]);
+		}
+		//find latest posts by following
+		var follow = _.map(following,function(u){return u.user});
+		Pic
+		.find({user:{$in:follow}, private:false})
+		.sort({_id:-1})
+		.limit(20)
+		.populate('user', "id screen_name username")
+		.exec(function(err, posts){
+			if(err) throw err;
+			res.json(posts);
+		});
+	});
+});
 app.post('/fbcomment', function(req, res){
 	if(!req.body.data && !req.body.data.href){
 		return res.end();
@@ -457,6 +439,48 @@ app.get('/:user', function(req,res){
 		});
 	});
 });
+app.get('/:user/favorites', function(req,res){
+	User.findOne({username:req.params.user}, function(err, user){
+		if(err) throw err;
+		if(!user){
+			return res.end('TODO: 404 page');
+		}
+		async.auto({
+			popular:function(fn){
+				Pic.popular(fn);
+			},
+			favorites:function(fn){
+				Pic
+				.find({'favorited.user':user._id}, {approvals:0, favorited:0, ip:0, request_headers:0})
+				.sort({_id:-1})
+				.limit(20)
+				.populate('user', "id screen_name username")
+				.exec(fn);
+			}
+		}, function(err, docs){
+			if (err) throw err;
+			docs.title = user.screen_name + " favorite posts on Anyme.me!";
+			docs.user = user;
+			res.render('user-favorite',docs);
+		});
+	});
+});
+app.get('/:user/:pic', function(req,res){
+	//find latest posts
+	var id = req.params.pic;
+	Pic
+	.findOne({_id:id})
+	.populate('user', "id screen_name username")
+	.exec(function(err, pic){
+		if(err) throw err;
+		if(pic){
+			//increment views
+			Pic.update({_id:id},{$inc:{views:1}}, function(err){});
+			res.render('display', {pic:pic, title:pic.user.screen_name + " on Anyme.me"});
+		}
+	});
+	
+});
 app.post('/favorite', Authenticate, function(req, res){
 	var id = req.body.id;
 	var uid = req.user._id;
@@ -495,6 +519,75 @@ app.post('/remove-post', Authenticate, function(req, res){
 		
 	});
 });
+app.post('/follow', Authenticate, function(req, res){
+	var user = req.body.user;
+	if(user == req.user._id){
+		return res.json({error:"You can't follow yourself!"});
+	}
+	if(user.length != 24){
+		return res.json({error:"Incorrect user id supplied!"});
+	}
+	//check if user exists
+	User.count({_id:user}, function(err, count){
+		if(err) throw err;
+		var exists = count == 1;
+		if(exists == true){
+			//check if i'm following this user
+			User.count({_id:req.user._id, "following_l.user":user}, function(err, count){
+				if(err) throw err;
+				var following = count == 1;
+				if(following == false){
+					//follow!
+					User.update({_id:req.user._id},{$push:{following_l:{user:user}}, $inc:{following:1}}, function(err, updated){
+						if(err) throw err;
+						//increment the users followers
+						User.update({_id:user},{$inc:{followers:1}}, function(err, update){});
+						res.json({message:"followed"});
+					});
+				}else{
+					res.json({error:"You're already following this user"});
+				}
+			});
+		}else{
+			return res.json({error:"User doens't exists to follow!"});
+		}
+	});
+});
+app.post('/unfollow', Authenticate, function(req, res){
+	var user = req.body.user;
+	if(user == req.user._id){
+		return res.json({error:"You can't follow yourself!"});
+	}
+	if(user.length != 24){
+		return res.json({error:"Incorrect user id supplied!"});
+	}
+	//check if user exists
+	User.count({_id:user}, function(err, count){
+		if(err) throw err;
+		var exists = count == 1;
+		if(exists == true){
+			//check if i'm following this user
+			User.count({_id:req.user._id, "following_l.user":user}, function(err, count){
+				if(err) throw err;
+				var following = count == 1;
+				if(following == true){
+					//unfollow!
+					User.update({_id:req.user._id},{$pull:{following_l:{user:user}}, $inc:{following:-1}}, function(err, updated){
+						if(err) throw err;
+						//increment the users followers
+						User.update({_id:user},{$inc:{followers:-1}}, function(err, update){});
+						res.json({message:"unfollowed"});
+					});
+				}else{
+					res.json({error:"You're not following this user"});
+				}
+			});
+		}else{
+			return res.json({error:"User doens't exists to follow!"});
+		}
+	});
+});
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

@@ -9,6 +9,18 @@ block content
 	.row
 		.span8
 			include canvas
+			header#sort-header.navbar
+				nav.navbar-inner
+					.container
+						ul.nav
+							li.active
+								a(href='#') LATEST
+							li.fetch-posts(data-url='/following')
+								a(href='#') FOLLOWING
+							li
+								a(href='#') MOST POPULAR
+						form.form-search.pull-right
+							input.input-medium(type='text', placeholder='Enter your search terms')
 			section.row#post-listing
 				-each post in latest
 					include components/post
