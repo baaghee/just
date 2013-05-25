@@ -354,14 +354,13 @@ app.get('/posts/following', Authenticate, function(req, res){
 		}
 		//find latest posts by following
 		var follow = _.map(following,function(u){return u.user});
-		Pic
-		.find({user:{$in:follow}, private:false})
-		.sort({_id:-1})
-		.limit(20)
-		.populate('user', "id screen_name username")
-		.exec(function(err, posts){
-			if(err) throw err;
-			res.json(posts);
+		Pic.fetch({
+			find:{},
+			user:req.user._id, 
+			fn:function(err, posts){
+				if(err) throw err;
+				res.json(posts);
+			}
 		});
 	});
 });
