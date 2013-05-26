@@ -25,6 +25,7 @@ racker
 .set('key', '453bfb34869c3340d621d82b9a9e278c');
 
 var db_path = argv.localdb ? "mongodb://127.0.0.1:27017/anymeme" : 'mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307';
+db_path = 'mongodb://iulogy.com/anymeme';
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection(db_path);
@@ -354,8 +355,9 @@ app.get('/posts/following', Authenticate, function(req, res){
 		}
 		//find latest posts by following
 		var follow = _.map(following,function(u){return u.user});
+		console.log({$in:follow});
 		Pic.fetch({
-			find:{},
+			find:{'user':{$in:follow}},
 			user:req.user._id, 
 			fn:function(err, posts){
 				if(err) throw err;
