@@ -332,6 +332,12 @@ $(function(){
     		}
     	});
     });
+    $("body").on('click',".follow-btn", function(){
+    	var id = $(this).data().id.replace(/\"/g,'');
+    	$.post("/follow",{user:id}, function(res){
+    		console.log(res);
+    	});
+    });
 	window.fbAsyncInit = function() {
 		FB.init({
 			appId      : '565414836813596',                        // App ID from the app dashboard

@@ -26,6 +26,12 @@ racker
 
 var db_path = argv.localdb ? "mongodb://127.0.0.1:27017/anymeme" : 'mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307';
 db_path = 'mongodb://iulogy.com/anymeme';
+
+//create path if not exist
+if(!fs.existsSync("./public/files/")){
+	fs.mkdirSync("./public/files");
+}
+
 //DB
 mongoose = require('mongoose');
 db = mongoose.createConnection(db_path);

@@ -1,7 +1,11 @@
 {
   "name": "anymeme",
-  "version": "0.0.2-4",
+  "version": "0.0.2-9",
   "subdomain": "anymeme",
+  "domains": [
+    "anyme.me",
+    "www.anyme.me"
+  ],
   "scripts": {
     "start": "node app.js"
   },
