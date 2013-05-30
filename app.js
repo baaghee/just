@@ -437,6 +437,13 @@ app.get('/:user', function(req,res){
 			},
 			favorites:function(fn){
 				Pic.count({'favorited.user':user._id}, fn);
+			},
+			following:function(fn){
+				if(req.user){
+					User.count({_id:req.user._id, "following_l.user":user._id}, fn);
+				}else{
+					fn(null, null);
+				}
 			}
 		}, function(err, docs){
 			if (err) throw err;

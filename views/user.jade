@@ -6,6 +6,7 @@ block content
 			section.well.row(style='width: 490px;margin: 20px 45px;')
 				img(src="http://graph.facebook.com/"+user.username+"/picture")
 				h4=user.screen_name
+				p Azmath is an asshole
 				div.btn-group
 					a.btn.btn-medium
 						div Posts
@@ -13,6 +14,14 @@ block content
 					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
 						div Favorites
 						strong=favorites
+					-var following_text, following_class;
+					-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
+					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
+						div Following
+						strong=following_text
+					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
+						div Follows you
+						strong no
 			section.row#post-listing
 				-each post in latest
 					-if(locals._user && post.user._id.toString() == locals._user._id.toString())
