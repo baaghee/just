@@ -181,7 +181,11 @@ app.get('*', function(req, res, next){
 app.get('/', function(req,res){
 	async.auto({
 		latest:function(fn){
-			Pic.latest({}, fn);
+			Pic.fetch({
+				find:{},
+				user:req.user._id, 
+				fn:fn
+			});
 		},
 		popular:function(fn){
 			Pic.popular(fn);

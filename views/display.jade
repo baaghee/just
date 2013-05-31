@@ -34,9 +34,11 @@ block content
 					img(src=cdn_url+"/" + pic.pic)
 					div.post-footer
 						-if(locals._user)
-							div.pull-left
+							div.pull-left.btn-group
 								a.btn.btn-small.make-favorite(data-id=pic._id)
-									strong Favorite
+									i.icon-star
+								a.btn.btn-small
+									strong #{pic.views} views
 						div.pull-right(style='margin-right:15px')
 							div.span1
 								div.fb-like(data-send="false", data-layout="button_count", data-width="450", data-show-faces="true", data-font="segoe ui")
