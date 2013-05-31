@@ -183,7 +183,7 @@ app.get('/', function(req,res){
 		latest:function(fn){
 			Pic.fetch({
 				find:{},
-				user:req.user._id, 
+				user:(req.user? req.user._id:void 0), 
 				fn:fn
 			});
 		},
@@ -374,6 +374,15 @@ app.get('/posts/following', Authenticate, function(req, res){
 				res.json(posts);
 			}
 		});
+	});
+});
+app.get('/featured', function(req,res){
+	Pic.fetch({
+		find:{featured:true},
+		fn:function(err, posts){
+			if(err) throw err;
+			res.json(posts);
+		}
 	});
 });
 app.post('/fbcomment', function(req, res){
