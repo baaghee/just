@@ -25,7 +25,7 @@ racker
 .set('key', '453bfb34869c3340d621d82b9a9e278c');
 
 var db_path = argv.localdb ? "mongodb://127.0.0.1:27017/anymeme" : 'mongodb://nodejitsu:6a086953e5a5c3f5a1b729472bd019e2@alex.mongohq.com:10036/nodejitsudb8170725307';
-db_path = 'mongodb://iulogy.com/anymeme';
+//db_path = 'mongodb://iulogy.com/anymeme';
 
 //create path if not exist
 if(!fs.existsSync("./public/files/")){
@@ -40,6 +40,23 @@ var User = require('./lib/User');
 var Pic = require('./lib/Pic');    
 
 var sessionStore = new MongoStore({url:db_path}); 
+
+var reserved = {
+	"following":1,
+	"followers":1,
+	"featured":1,
+	"popular":1,
+	"i":1,
+	"latest":1,
+	"user":1,
+	"logout":1,
+	"register":1,
+	"auth":1,
+	"pic":1,
+	"post":1,
+	"posts":1,
+	"favorites":1
+};
  
 passport.use(new FacebookStrategy({
 		clientID: "565414836813596",
@@ -142,6 +159,11 @@ app.get('/register', Authenticate, function(req,res){
 });
 app.post('/register',  function(req, res){
 	var screen_name = req.body.screen_name;
+	//check if reserved
+	if(screen_name in reserved){
+		return res.json({error:"Invalid username!"});	
+	}
+	//check validity
 	if(!validName){
 		return res.json({error:"Invalid username!"});
 	}

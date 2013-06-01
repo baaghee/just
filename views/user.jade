@@ -6,14 +6,13 @@ block content
 			section.well.row(style='width: 490px;margin: 20px 45px;')
 				img(src="http://graph.facebook.com/"+user.username+"/picture")
 				h4=user.screen_name
-				-if(user.website)
-					-if(locals._user && locals._user._id.toString() == user._id.toString())
-						div.userwebsite.navbar-form(style='margin: 10px 3px;')
-							input(type='text', placeholder='Set your website', value=user.website)#website.span4
-							button(type='button').btn#set-website Update
-					-else
-						p
-							a(href=user.website)=user.website
+				-if(locals._user && locals._user._id.toString() == user._id.toString())
+					div.userwebsite.navbar-form(style='margin: 10px 3px;')
+						input(type='text', placeholder='Set your website', value=user.website)#website.span4
+						button(type='button').btn#set-website Update
+				-else
+					p
+						a(href=user.website)=user.website
 				div.btn-group
 					a.btn.btn-medium
 						div Posts

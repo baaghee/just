@@ -22,9 +22,18 @@ block content
 				$("#screen_name_display").text(val).css("color", col);
 			});
 			$("#register").submit(function(e){
-				if($("#screen_name").val().match(/^[A-z]+$/) == null){
-					e.preventDefault();
-					
+				e.preventDefault();
+				var name = $("#screen_name").val();
+				if(name.match(/^[A-z]+$/) == null){
+					return;
 				}
+				//register
+				$.post('/register', {screen_name:name}, function(res){
+					if(res.error){
+						alert(res.error);
+					}else{
+						window.location.reload(true);
+					}
+				});
 			});
 		});
