@@ -13,15 +13,16 @@ block content
 				nav.navbar-inner
 					.container
 						ul.nav
-							li.active
-								a(href='#') LATEST
+							-var type = typeof type == 'undefined' ? '' : type;
+							li(class=(type == 'latest' ? "active":""))
+								a(href='/latest') LATEST
 							-if(locals._user)
-								li.fetch-posts(data-url='/following')
-									a(href='#') FOLLOWING
-							li
-								a(href='#') MOST POPULAR
-							li.fetch-posts(data-url='/featured')
-								a(href='#') FEATURED
+								li(class=(type == 'following' ? "active":""))
+									a(href='/following') FOLLOWING
+							li(class=(type == 'popular' ? "active":""))
+								a(href='/popular') MOST POPULAR
+							li(class=(type == 'featured' ? "active":""))
+								a(href='/featured') FEATURED
 						form.form-search.pull-right
 							input.input-medium(type='text', placeholder='Enter your search terms')
 			section.row#post-listing

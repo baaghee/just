@@ -3,8 +3,11 @@ body {
 }
 
 #main-header .navbar-inner {
-	padding: 5px 0px;
+	padding: 0px;
 	font-family: 'Roboto Condensed', sans-serif;
+}
+#menus{
+	margin-top:9px;	
 }
 
 #main-header .brand, #main-header .brand:visited {

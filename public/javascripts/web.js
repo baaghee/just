@@ -314,24 +314,6 @@ $(function(){
     		self.parent().parent().slideUp();
     	});
     });
-    $("body").on('click', '.fetch-posts', function(){
-    	var url = $(this).data().url;
-    	$.getJSON('/posts/following', function(posts){
-    		$("#post-listing").html('');
-    		if(posts.length){
-    			var html = '';
-    			posts.forEach(function(e){
-    				html += jade.render('post', {post:e});
-    			});
-    			$("#post-listing").append(html);
-    		}else{
-    			$("#post-listing").html('<h2 style="text-align:center">No posts!</h2>');
-    		}
-    		if(posts.length < 20){
-    			$("#load-more-post").hide();
-    		}
-    	});
-    });
     $("body").on('click',".follow-btn", function(){
     	var id = $(this).data().id.replace(/\"/g,'');
     	$.post("/follow",{user:id}, function(res){
@@ -351,7 +333,40 @@ $(function(){
 		FB.Event.subscribe('comment.remove', function(res){
 			$.post('/fbcomment', {type:'remove', data:res});
 		});   
-	}	
+	}
+	function loadPosts(url){
+    	$.getJSON(url, function(posts){
+    		$("#post-listing").html('');
+    		if(posts.length){
+    			var html = '';
+    			posts.forEach(function(e){
+    				html += jade.render('post', {post:e});
+    			});
+    			$("#post-listing").append(html);
+    		}else{
+    			$("#post-listing").html('<h2 style="text-align:center">No posts!</h2>');
+    		}
+    		if(posts.length < 20){
+    			$("#load-more-post").hide();
+    		}
+    	});
+
+	}
+	var app = Davis(function () {
+		this.get('/featured', function (req) {
+			loadPosts('/featured');
+		});
+		this.get('/following', function (req) {
+			loadPosts('/following');
+		});
+		this.get('/popular', function (req) {
+			loadPosts('/popular');
+		});
+		this.get('/latest', function (req) {
+			loadPosts('/latest');
+		});
+	})
+	app.start();
 });
 
 

@@ -194,6 +194,17 @@ app.get('/', function(req,res){
 		res.render('index',docs);
 	});
 });
+
+app.get('/latest', function(req,res){
+	Pic.fetch({
+		find:{},
+		user:(req.user? req.user._id:void 0), 
+		fn:function(err, posts){
+			if(err) throw err;
+			res.json(posts);
+		}
+	});
+});
 app.post('/test/', function(req, res){
     var type = req.body.type;
     var text = req.body.text;
@@ -377,13 +388,30 @@ app.get('/posts/following', Authenticate, function(req, res){
 	});
 });
 app.get('/featured', function(req,res){
-	Pic.fetch({
-		find:{featured:true},
-		fn:function(err, posts){
-			if(err) throw err;
-			res.json(posts);
-		}
-	});
+	if(!req.xhr){
+		async.auto({
+			latest:function(fn){
+				Pic.fetch({
+					find:{featured:true},
+					fn:fn
+				});
+			},
+			popular:function(fn){
+				Pic.popular(fn);
+			}
+		}, function(err, docs){
+			docs.type = 'featured';
+			res.render('index',docs);
+		});
+	}else{
+		Pic.fetch({
+			find:{featured:true},
+			fn:function(err, posts){
+				if(err) throw err;
+				res.json(posts);
+			}
+		});
+	}
 });
 app.post('/fbcomment', function(req, res){
 	if(!req.body.data && !req.body.data.href){
@@ -465,6 +493,19 @@ app.get('/:user', function(req,res){
 			res.render('user',docs);
 		});
 	});
+});
+app.post('/user/set-website', Authenticate, function(req, res){
+	if(req.body.website && req.body.website != ''){
+		return User.update({_id:req.user._id}, {$set:{website:req.body.website}}, function(err, changed){
+			if(err) throw err;
+			if(changed == 0){
+				res.json({error: "Unable to set the website"});
+			}else{
+				res.json({message:"Successfully changed website"});
+			}
+		});
+	}
+	return res.json({error:"Invalid data"});
 });
 app.get('/:user/favorites', function(req,res){
 	User.findOne({screen_name:req.params.user}, function(err, user){
