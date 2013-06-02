@@ -13,16 +13,16 @@ block content
 			header#sort-header.navbar
 				nav.navbar-inner
 					.container
-						ul.nav
+						ul.nav#homepage_nav
 							-var type = typeof type == 'undefined' ? '' : type;
-							li(class=(type == 'latest' ? "active":""))
-								a(href='/latest') LATEST
+							li(class=(type == 'latest' ? "active":""))#davis_latest
+								a(href='/') LATEST
 							-if(locals._user)
-								li(class=(type == 'following' ? "active":""))
+								li(class=(type == 'following' ? "active":""))#davis_following
 									a(href='/following') FOLLOWING
-							li(class=(type == 'popular' ? "active":""))
+							li(class=(type == 'popular' ? "active":""))#davis_popular
 								a(href='/popular') MOST POPULAR
-							li(class=(type == 'featured' ? "active":""))
+							li(class=(type == 'featured' ? "active":""))#davis_featured
 								a(href='/featured') FEATURED
 						form.form-search.pull-right
 							input.input-medium(type='text', placeholder='Enter your search terms')
@@ -31,3 +31,48 @@ block content
 					include components/post
 			button.btn.btn-large#load-more-post(style='width: 530px;margin: 20px 45px;') more ...
 		include rightside
+	script(type='text/javascript')
+		$(function(){
+			function loadPosts(url){
+				$.getJSON(url, function(posts){
+					$("#post-listing").html('');
+					if(posts.length){
+						var html = '';
+						posts.forEach(function(e){
+							html += jade.render('post', {post:e});
+						});
+						$("#post-listing").append(html);
+					}else{
+						$("#post-listing").html('<h2 style="text-align:center">No posts!</h2>');
+					}
+					if(posts.length < 20){
+						$("#load-more-post").hide();
+					}
+				});
+
+			}
+			var app = Davis(function () {
+				this.get('/featured', function (req) {
+					$("#homepage_nav li").removeClass("active");
+					$("#davis_featured").addClass("active");
+					loadPosts('/featured');
+				});
+				this.get('/following', function (req) {
+					$("#homepage_nav li").removeClass("active");
+					$("#davis_following").addClass("active");
+					loadPosts('/following');
+				});
+				this.get('/popular', function (req) {
+					$("#homepage_nav li").removeClass("active");
+					$("#davis_popular").addClass("active");
+					loadPosts('/popular');
+				});
+				this.get('/', function (req){
+					$("#homepage_nav li").removeClass("active");
+					$("#davis_latest").addClass("active");
+					loadPosts('/');
+				});
+			})
+			app.start();
+
+		})

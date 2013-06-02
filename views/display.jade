@@ -2,6 +2,7 @@ extends layout
 
 block content
 	-var _url = 'http://anyme.me/' + pic.username + '/' + pic._id;
+	-var cdn_pic = cdn_url+"/" + pic.pic;
 	-var post = pic;
 	div#fb-root
 	script(type='text/javascript')
@@ -31,7 +32,7 @@ block content
 						span.date(title=moment(pic.date).format('LLLL'))=moment(pic.date).fromNow()
 						br.clear
 					include like
-					img(src=cdn_url+"/" + pic.pic)
+					img(src=cdn_pic)
 					div.post-footer
 						-if(locals._user)
 							div.pull-left.btn-group
@@ -44,6 +45,9 @@ block content
 								div.fb-like(data-send="false", data-layout="button_count", data-width="450", data-show-faces="true", data-font="segoe ui")
 							div.span1
 								a.twitter-share-button(href="https://twitter.com/share", data-via="anymeme") Tweet
+							div.span1
+								a(href="//pinterest.com/pin/create/button/?url="+encodeURIComponent(_url)+"&media="+encodeURIComponent(cdn_pic)+"&description="+pic.user.screen_name+"%20on%20Anymeme", data-pin-do="buttonPin", data-pin-config="beside")
+									img(src="//assets.pinterest.com/images/pidgets/pin_it_button.png")
 						br.clear
 					div
 						h4 Comments

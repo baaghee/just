@@ -201,31 +201,32 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', function(req,res){
-	async.auto({
-		latest:function(fn){
-			Pic.fetch({
-				find:{},
-				user:(req.user? req.user._id:void 0), 
-				fn:fn
-			});
-		},
-		popular:function(fn){
-			Pic.popular(fn);
-		}
-	}, function(err, docs){
-		res.render('index',docs);
-	});
-});
-
-app.get('/latest', function(req,res){
-	Pic.fetch({
-		find:{},
-		user:(req.user? req.user._id:void 0), 
-		fn:function(err, posts){
-			if(err) throw err;
-			res.json(posts);
-		}
-	});
+	if(!req.xhr){
+		async.auto({
+			latest:function(fn){
+				Pic.fetch({
+					find:{},
+					user:(req.user? req.user._id:void 0), 
+					fn:fn
+				});
+			},
+			popular:function(fn){
+				Pic.popular(fn);
+			}
+		}, function(err, docs){
+			docs.type = 'latest';
+			res.render('index',docs);
+		});
+	}else{
+		Pic.fetch({
+			find:{},
+			user:(req.user? req.user._id:void 0), 
+			fn:function(err, posts){
+				if(err) throw err;
+				res.json(posts);
+			}
+		});
+	}
 });
 app.post('/test/', function(req, res){
     var type = req.body.type;
@@ -386,7 +387,7 @@ app.get('/posts/before/:id', function(req, res){
 		res.json(posts);
 	});
 });
-app.get('/posts/following', Authenticate, function(req, res){
+app.get('/following', Authenticate, function(req, res){
 	var id = req.user._id;
 	//find following
 	User.findOne({_id:id},{following_l:1, 'following_l.user':1}, function(err, following){
@@ -398,15 +399,33 @@ app.get('/posts/following', Authenticate, function(req, res){
 		}
 		//find latest posts by following
 		var follow = _.map(following,function(u){return u.user});
-		console.log({$in:follow});
-		Pic.fetch({
-			find:{'user':{$in:follow}},
-			user:req.user._id, 
-			fn:function(err, posts){
-				if(err) throw err;
-				res.json(posts);
-			}
-		});
+		if(!req.xhr){
+			async.auto({
+				latest:function(fn){
+					Pic.fetch({
+						find:{'user':{$in:follow}},
+						user:req.user._id, 
+						fn:fn
+					});
+				},
+				popular:function(fn){
+					Pic.popular(fn);
+				}
+			}, function(err, docs){
+				docs.type = 'following';
+				res.render('index',docs);
+			});
+		}else{
+			Pic.fetch({
+				find:{'user':{$in:follow}},
+				user:req.user._id, 
+				fn:function(err, posts){
+					if(err) throw err;
+					res.json(posts);
+				}
+			});
+		}
+
 	});
 });
 app.get('/featured', function(req,res){
