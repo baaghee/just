@@ -273,6 +273,7 @@ app.post('/pic', Authenticate, function(req, res){
 			fs.writeFile('./test.png', pic, 'base64', function(err) {
 
 			});*/
+			var watermark = "anyme.me/" + req.user.screen_name;
 			var file_name_seed = ((Math.random()*10000000 +100000 + new Date().getTime()) << .1).toString(16)
 			var f_name = file_name_seed + '.png';
 			var jpg_name = file_name_seed + '.jpg';
@@ -282,6 +283,14 @@ app.post('/pic', Authenticate, function(req, res){
 			fs.writeFile(temppath, pic, 'base64', function(err) {
 				//convert to jpg
 				gm(temppath)
+				.quality(83)
+				.font('X11')
+				.fill('white')
+				.stroke('white',5)
+				.drawText(20, 470, watermark)
+				.stroke('transparent',0)
+				.fill('black')
+				.drawText(21, 471, watermark)
 				.write(jpgtemppath, function (err) {
 					if (!err) console.log('done');
 					//resizing
