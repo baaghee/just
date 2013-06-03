@@ -56,7 +56,8 @@ var reserved = {
 	"pic":1,
 	"post":1,
 	"posts":1,
-	"favorites":1
+	"favorites":1,
+	"random":1
 };
  
 passport.use(new FacebookStrategy({
@@ -292,7 +293,6 @@ app.post('/pic', Authenticate, function(req, res){
 					jpgtemppath
 					
 				],function(err){
-					console.log(arguments);
 					async.parallel([
 						function(fn){
 							racker
@@ -326,6 +326,7 @@ app.post('/pic', Authenticate, function(req, res){
 							ip:req.ip,
 							md5:hash,
 							private:req.body.private,
+							randomizer:[Math.random(), 0],
 							text:req.body.text
 							//request_headers:{}
 
@@ -507,6 +508,21 @@ app.post('/post/:id/approve', Authenticate, function(req, res){
 			});
 		});
 		
+	});
+});
+app.get('/random', function(req, res){
+	Pic
+	.count(function(err, count){
+		if(err) throw err;
+		var rand = Math.floor( Math.random() * count );
+		Pic
+		.findOne()
+		.populate('user', "id screen_name username")
+		.skip(rand)
+		.exec(function(err, doc){
+			if(err) throw err;
+			res.redirect('/' + doc.user.screen_name + '/' + doc._id);
+		});
 	});
 });
 app.get('/:user', function(req,res){
