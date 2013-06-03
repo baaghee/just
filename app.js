@@ -16,6 +16,7 @@ var express = require('express')
   , fb = require('fb')
   , async = require('async')
   , gm = require('gm')
+  , im = require('imagemagick')
   , md5 = require('MD5')
   , racker = require('racker')
 moment = require('moment');
@@ -282,18 +283,16 @@ app.post('/pic', Authenticate, function(req, res){
 			var jpgtemppath = tempfolder + file_name_seed + ".jpg";
 			fs.writeFile(temppath, pic, 'base64', function(err) {
 				//convert to jpg
-				gm(temppath)
-				.quality(83)
-				.font('X11')
-				.fill('white')
-				.stroke('white',5)
-				.drawText(20, 470, watermark)
-				.stroke('transparent',0)
-				.fill('black')
-				.drawText(21, 471, watermark)
-				.write(jpgtemppath, function (err) {
-					if (!err) console.log('done');
-					//resizing
+				im
+				.convert([
+					'-composite',
+					'-gravity', 'SouthWest', 
+					temppath,
+					__dirname + "/public/watermarks/morph.png",				
+					jpgtemppath
+					
+				],function(err){
+					console.log(arguments);
 					async.parallel([
 						function(fn){
 							racker
@@ -304,7 +303,7 @@ app.post('/pic', Authenticate, function(req, res){
 							.end(fn);
 						},
 						function(fn){
-							gm(jpgtemppath)
+							gm(temppath)
 							.resize(260,215)
 							.toBuffer(function(err, buffer){
 								racker
@@ -333,8 +332,8 @@ app.post('/pic', Authenticate, function(req, res){
 						}).save(function(err, doc){
 							if(err) throw err;
 							//delete temp files
-							fs.unlink(jpgtemppath, function(){});
-							fs.unlink(temppath, function(){});
+							//fs.unlink(jpgtemppath, function(){});
+							//fs.unlink(temppath, function(){});
 							
 							Pic
 							.findOne({_id:doc._id})
