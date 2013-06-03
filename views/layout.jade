@@ -4,11 +4,11 @@ html(lang='en')
 		meta(charset='utf-8')
 		-_title = typeof title == 'undefined' ? 'MOAR FUN!' : title;
 		title=_title
+		-if(typeof prerender != 'undefined')
+			link(rel="prerender", href=prerender)
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		meta(name='description', content='')
 		meta(name='author', content='')
-
-
 		link(href='http://fonts.googleapis.com/css?family=Oswald', rel='stylesheet', type='text/css')
 		link(href='http://fonts.googleapis.com/css?family=Days+One', rel='stylesheet', type='text/css')
 		link(href='http://fonts.googleapis.com/css?family=Philosopher', rel='stylesheet', type='text/css')
@@ -36,6 +36,7 @@ html(lang='en')
 		script(src='/javascripts/jcanvas.min.js')
 		script(src='https://raw.github.com/olivernn/davis.js/master/davis.min.js')
 		script(src='/javascripts/web.js')
+		
 
 	body( data-spy="scroll", data-target=".bs-docs-sidebar")
 		header#main-header.navbar.navbar-fixed-top
