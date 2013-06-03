@@ -609,21 +609,7 @@ app.get('/:user/:pic', function(req,res){
 		if(pic){
 			//increment views
 			Pic.update({_id:id},{$inc:{views:1}}, function(err){});
-			Pic
-			.count(function(err, count){
-				if(err) throw err;
-				var rand = Math.floor( Math.random() * count );
-				Pic
-				.findOne()
-				.populate('user', "id screen_name username")
-				.skip(rand)
-				.exec(function(err, doc){
-					if(err) throw err;
-					res.redirect('/' + doc.user.screen_name + '/' + doc._id);
-					res.render('display', {pic:pic, title:pic.user.screen_name + " on Anyme.me", prerender:"http://anyme.me/" + doc.user.screen_name + '/' + doc._id});
-				});
-			});
-			
+			res.render('display', {pic:pic, title:pic.user.screen_name + " on Anyme.me"});
 		}
 	});
 	
