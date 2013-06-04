@@ -1,136 +1,147 @@
 header#sub-header.navbar
 	nav.navbar-inner
 		.container
-			form#post-form.form-search.pull-right
-				a#upload-image.btn(href='#') Two row
-				a.btn#clear Clear
-				#any-textarea
-					textarea#input(rows='3', placeholder='Type to generate image')
-				#meme-textarea
-					textarea(rows='1', placeholder='Top text')#top-input
-					textarea(rows='1', placeholder='Bottom text')#bot-input
-				#text-menu.pull-left
-					.btn-group
-						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Choose Font')
-							i.icon-font
-							span.caret
-						ul.dropdown-menu.change-canvas-attribute(data-role='font')
-							li(data-attribute="Oswald")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Oswald', sans-serif;") Oswald
-							li(data-attribute="Days One")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Days One', sans-serif;") Days One
-							li(data-attribute="Philosopher")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Philosopher', sans-serif;") Philosopher
-							li(data-attribute="Iceberg")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Iceberg', sans-serif;") Iceberg
-							li(data-attribute="Abril Fatface")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Abril Fatface', sans-serif;") Abril Fatface
-							li(data-attribute="Lobster Two")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Lobster Two', sans-serif;") Lobster Two
-							li(data-attribute="Maiden Orange")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Maiden Orange', sans-serif;") Maiden Orange
-							li(data-attribute="Rancho")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Rancho', sans-serif;") Rancho
-							li(data-attribute="Varela Round")
-								a(role='menuitem', tabindex='-1', style="font-family: 'Varela Round', sans-serif;") Varela Round
-					.btn-group
-						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Size')
-							i.icon-text-width
-							span.caret
-						ul.dropdown-menu.change-canvas-attribute(data-role='size')
-							li(data-attribute='14px')
-								a(role='menuitem', tabindex='-1')
-									span.font-small Small
-							li(data-attribute='18px')
-								a(role='menuitem', tabindex='-1')
-									span.font-normal Normal
-							li(data-attribute='26px')
-								a(role='menuitem', tabindex='-1')
-									span.font-large Large
-							li(data-attribute='38px')
-								a(role='menuitem', tabindex='-1')
-									span.font-huge Huge
-					.btn-group
-						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Color')
-							i.icon-tint
-							span.caret
-						ul.dropdown-menu.change-canvas-attribute(data-role='textColor')
-							li(data-attribute='red')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:red') &nbsp 
-							li(data-attribute='black')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:black') &nbsp 
-							li(data-attribute='white')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:white') &nbsp 
-							li(data-attribute='greenYellow')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:greenYellow') &nbsp 
-							li(data-attribute='green')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:green') &nbsp 
-							li(data-attribute='blue')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:blue') &nbsp 
-							li(data-attribute='pink')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:pink') &nbsp 
-							li(data-attribute='gray')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:gray') &nbsp 
-							li(data-attribute='red')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:red') &nbsp 
-							
-					.btn-group
-						a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Background Color')
-							i.icon-adjust
-							span.caret
-						ul.dropdown-menu.change-canvas-attribute(data-role='bgColor')
-							li(data-attribute='red')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:red') &nbsp 
-							li(data-attribute='black')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:black') &nbsp 
-							li(data-attribute='white')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:white') &nbsp 
-							li(data-attribute='greenYellow')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:greenYellow') &nbsp 
-							li(data-attribute='green')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:green') &nbsp 
-							li(data-attribute='blue')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:blue') &nbsp 
-							li(data-attribute='pink')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:pink') &nbsp 
-							li(data-attribute='gray')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:gray') &nbsp 
-							li(data-attribute='red')
-								a(role='menuitem', tabindex='-1')
-									div(style='background:red') &nbsp 
-					div.btn-group(data-toggle="buttons-checkbox")
-						button.btn(type='button', title='Alpha')#change-canvas-alpha A
-						button.btn(type='button', title='Text shadow')#change-canvas-textshadow S
-				#upload-menu.pull-left
-					div.fileupload.fileupload-new(data-provides='fileupload')
-						span.btn.btn-file
-							span.fileupload-new Select file
-							span.fileupload-exists Change
-							input(type='file')#file
-				#post-btn.pull-right
-					a.btn#submit Post
-				section.pull-right
-					input(type='checkbox', checked="checked")#post-to-fb
-					span FB
-					input(type='checkbox')#post-private
-					span Private
+			.row
+				form#post-form.span7
+					.span7
+						#any-textarea
+							textarea#input.span6(rows='3', placeholder='Type to generate image')
+						#meme-textarea
+							textarea(rows='1', placeholder='Top text')#top-input
+							textarea.pull-right(rows='1', placeholder='Bottom text')#bot-input
+						#text-menu.span5.margin-zero
+							p.menu-headings Style:
+							.btn-group
+								a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Choose Font')
+									i.icon-font
+									span.caret
+								ul.dropdown-menu.change-canvas-attribute(data-role='font')
+									li(data-attribute="Oswald")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Oswald', sans-serif;") Oswald
+									li(data-attribute="Days One")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Days One', sans-serif;") Days One
+									li(data-attribute="Philosopher")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Philosopher', sans-serif;") Philosopher
+									li(data-attribute="Iceberg")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Iceberg', sans-serif;") Iceberg
+									li(data-attribute="Abril Fatface")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Abril Fatface', sans-serif;") Abril Fatface
+									li(data-attribute="Lobster Two")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Lobster Two', sans-serif;") Lobster Two
+									li(data-attribute="Maiden Orange")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Maiden Orange', sans-serif;") Maiden Orange
+									li(data-attribute="Rancho")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Rancho', sans-serif;") Rancho
+									li(data-attribute="Varela Round")
+										a(role='menuitem', tabindex='-1', style="font-family: 'Varela Round', sans-serif;") Varela Round
+							.btn-group
+								a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Size')
+									i.icon-text-width
+									span.caret
+								ul.dropdown-menu.change-canvas-attribute(data-role='size')
+									li(data-attribute='14px')
+										a(role='menuitem', tabindex='-1')
+											span.font-small Small
+									li(data-attribute='18px')
+										a(role='menuitem', tabindex='-1')
+											span.font-normal Normal
+									li(data-attribute='26px')
+										a(role='menuitem', tabindex='-1')
+											span.font-large Large
+									li(data-attribute='38px')
+										a(role='menuitem', tabindex='-1')
+											span.font-huge Huge
+							.btn-group
+								a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Font Color')
+									i.icon-tint
+									span.caret
+								ul.dropdown-menu.change-canvas-attribute(data-role='textColor')
+									li(data-attribute='red')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:red') &nbsp 
+									li(data-attribute='black')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:black') &nbsp 
+									li(data-attribute='white')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:white') &nbsp 
+									li(data-attribute='greenYellow')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:greenYellow') &nbsp 
+									li(data-attribute='green')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:green') &nbsp 
+									li(data-attribute='blue')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:blue') &nbsp 
+									li(data-attribute='pink')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:pink') &nbsp 
+									li(data-attribute='gray')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:gray') &nbsp 
+									li(data-attribute='red')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:red') &nbsp 
+									
+							.btn-group
+								a.btn.dropdown-toggle.tool(data-toggle='dropdown', href='#', title='', data-original-title='Background Color')
+									i.icon-adjust
+									span.caret
+								ul.dropdown-menu.change-canvas-attribute(data-role='bgColor')
+									li(data-attribute='red')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:red') &nbsp 
+									li(data-attribute='black')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:black') &nbsp 
+									li(data-attribute='white')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:white') &nbsp 
+									li(data-attribute='greenYellow')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:greenYellow') &nbsp 
+									li(data-attribute='green')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:green') &nbsp 
+									li(data-attribute='blue')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:blue') &nbsp 
+									li(data-attribute='pink')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:pink') &nbsp 
+									li(data-attribute='gray')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:gray') &nbsp 
+									li(data-attribute='red')
+										a(role='menuitem', tabindex='-1')
+											div(style='background:red') &nbsp 
+							div.btn-group(data-toggle="buttons-checkbox")
+								button#change-canvas-alpha.btn(type='button', title='Alpha') ALPHA
+								button.btn(type='button', title='Text shadow')#change-canvas-textshadow SHADOW
+						
+						
+						#attach-menu.span3.margin-zero
+							p.menu-headings Attach:
+							a.pull-left#upload-image.btn(href='#') Two row
+							#upload-menu
+							div.fileupload.fileupload-new(data-provides='fileupload')
+								span.btn.btn-file
+									span.fileupload-new Select file
+									span.fileupload-exists Change
+									input(type='file')#file
+
+						#third-row
+							#post-btn.pull-right
+								a.btn#clear Clear
+								a.btn#submit Post
+
+							section
+								p.menu-headings Share:
+								input(type='checkbox', checked="checked")#post-to-fb
+								span FB
+								input(type='checkbox')#post-private
+								span Private
 		section
 			canvas(height="480", width="580", style='margin-bottom:15px;display:none;border:solid 1px #f0f0f0')
 

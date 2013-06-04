@@ -7,9 +7,8 @@ block content
 		p
 			| With Anymeme you can share notes, articles, quotes, images, memes and much more. Your collections can be private or public.
 	.row
-		.span8
-			-if(locals._user)
-				include canvas
+		.span7.offset1
+			include canvas
 			header#sort-header.navbar
 				nav.navbar-inner
 					.container
@@ -24,8 +23,6 @@ block content
 								a(href='/popular') MOST POPULAR
 							li(class=(type == 'featured' ? "active":""))#davis_featured
 								a(href='/featured') FEATURED
-						form.form-search.pull-right
-							input.input-medium(type='text', placeholder='Enter your search terms')
 			section.row#post-listing
 				-each post in latest
 					include components/post
