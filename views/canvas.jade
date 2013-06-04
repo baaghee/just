@@ -125,7 +125,15 @@ header#sub-header.navbar
 							span.fileupload-exists Change
 							input(type='file')#file
 				#post-btn.pull-right
-					a.btn#submit Post
+					-if(!locals._user)
+						a(href="#fb-modal", role="button", class="btn", data-toggle="modal") Post				
+						div#fb-modal.modal.hide.fade(tabindex="-1", role="dialog", aria-labelledby="fb-modal", aria-hidden="true")
+							div.modal-header
+								button(type='button', data-dismiss="modal", aria-hidden="true").close ×
+							div.modal-body
+								a(href='/auth/facebook') Login with facebook
+					-else
+						a.btn#submit Post
 				section.pull-right
 					input(type='checkbox', checked="checked")#post-to-fb
 					span FB

@@ -1,9 +1,10 @@
 .post(data-id=post._id)
 	-var _url = 'http://anyme.me/' + post.user.username + '/' + post._id;
 	-console.log(post);
-	-if(!post.following || post.following == false)
-		div.follow-btn(data-id=post.user._id)
-			i.icon-plus
+	div.goodies-post
+		-if(!post.following || post.following == false)
+			div.follow-btn(data-id=post.user._id)
+				i.icon-plus
 	.post-head
 		img(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
 		a(href='/' + post.user.screen_name)=post.user.screen_name

@@ -213,21 +213,31 @@ body {
 	position:relative;
 
 }
-.follow-btn{
+.goodies-post{
 	position:absolute;
-	background:red;
 	left: -2px;
-	padding: 8px;
 	z-index: 0;
 	opacity:0;
-	-webkit-transition: .2s opacity linear;
+	-webkit-transition: .2s opacity linear, .2s left linear;
 	cursor:pointer;
 }
-.follow-btn:hover{
-	background:#f0f0f0;
+.follow-btn{
+	cursor:pointer;
+	padding: 12px;
+	background: #f0f0f0;
+	box-shadow: 1px 1px 1px lightgray;
+	line-height:0;
+	
 }
-.post:hover .follow-btn{
+.follow-btn-big{
+	padding:18px;
+}
+.follow-btn:hover{
+	background:red;
+}
+.post:hover .goodies-post{
 	opacity:1;
+	left: -25px;
 }
 .post .top-block-likes, .post .top-block-dislikes {
 	font-size: 12px;
