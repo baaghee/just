@@ -22,17 +22,12 @@ block content
 						strong=favorites
 					-var following_text, following_class;
 					-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
-					if(locals._user && locals._user._id.toString() != user._id.toString())
-						a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
-							div Following
-							strong=following_text
-						a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
-							div Follows you
-							strong no
-				if(locals._user && locals._user._id.toString() != user._id.toString())
-					div.btn-group.pull-right
-						div.follow-btn.follow-btn-big(data-id=user._id)
-							i.icon-plus
+					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
+						div Following
+						strong=following_text
+					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
+						div Follows you
+						strong no
 			section.row#post-listing
 				-each post in latest
 					-if(locals._user && post.user._id.toString() == locals._user._id.toString())

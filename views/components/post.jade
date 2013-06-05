@@ -1,15 +1,16 @@
-.post(data-id=post._id)
+.span7(data-id=post._id)
 	-var _url = 'http://anyme.me/' + post.user.username + '/' + post._id;
 	-console.log(post);
-	div.goodies-post
-		-if(!post.following || post.following == false)
-			div.follow-btn(data-id=post.user._id)
-				i.icon-plus
+	-if(!post.following || post.following == false)
+		div.follow-btn(data-id=post.user._id)
+			i.icon-plus
 	.post-head
-		img(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
-		a(href='/' + post.user.screen_name)=post.user.screen_name
-		span.date(title=moment(post.date).format('LLLL'))=moment(post.date).fromNow()
-		br.clear
-	include ../like
+		.pull-left.span3.mini-user-info
+			img.float-left(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
+			a.display-name-mini(href='/' + post.user.screen_name)=post.user.screen_name
+				span.date(title=moment(post.date).format('LLLL'))=moment(post.date).fromNow()
+			a#follow-user.margin-zero.span1.btn.btn-small(href="#") Follow
+			br.clear
+		include ../like
 	a(href='/' + post.user.screen_name + '/' + post._id)
-		img(src=cdn_url + '/' +  post.pic)
+		img.span7.post-image(src=cdn_url + '/' +  post.pic)

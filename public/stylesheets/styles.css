@@ -1,5 +1,25 @@
 body {
-	background: rgba(0, 0, 0, 0.1);
+	
+}
+
+.btn-group > .btn:first-child {
+	border-radius: 0;
+}
+
+.btn {
+	border-radius: 0;
+	background: #e9e9e9;
+	border: none;
+	text-shadow: none;
+	box-shadow: none;
+	padding: 9px 15px;
+	font-weight: bold;
+	font-size: 13px;
+	border: 1px solid #e1e1e1;
+}
+
+.btn:hover {
+	background: #e1e1e1;
 }
 
 #main-header .navbar-inner {
@@ -27,18 +47,20 @@ body {
 }
 
 #main {
-	margin-top: 110px;
+	margin-top: 80px;
 	position: relative;
 }
 
 #post-form {
-	
 	padding-top: 17px!important;
 	padding-bottom: 17px!important;
 }
 
+#post-form .span7 {
+	width: 94%;
+}
+
 #post-form textarea {
-	width: 565px;
 	background: rgba(0, 0, 0, 0.1);
 	margin-bottom: 10px;
 }
@@ -47,15 +69,35 @@ body {
 	
 }
 
-#any-textarea {
+#text-menu {
+	width: 63%;
+	float: left;
+}
 
+#attach-menu {
+	width: 28.5%;
+	float: right;
 }
 
 #meme-textarea {
 	display: none;
 }
 
+#meme-textarea textarea {
+	width: 45%;
+	border-radius: 0;
+	padding: 10px;
+	background: rgba(0, 0, 0, .05);
+	border: 1px solid #ddd;
+	box-shadow: none;
+}
 
+.menu-headings {
+	margin-bottom: 3px;
+	font-weight: bold;
+	font-size: 13px;
+	color: #666;
+}
 
 #anymeme {
 	background: rgba(255, 255, 255, .6);
@@ -102,7 +144,6 @@ body {
 }
 
 .top-block li {
-	border: 1px solid #ddd;
 	padding: 10px;
 	margin-left: 10px;
 	margin-bottom: 10px;
@@ -114,13 +155,48 @@ body {
 	font-weight: bold;
 }
 
+ #sort-header .navbar-inner {
+ 	border-radius: 0;
+ 	background: whiteSmoke;
+ 	border: 1px solid #eee;
+ 	box-shadow: none;
+ }
+
+ #sub-header .navbar-inner {
+	background: whiteSmoke;
+	border: 1px solid #eee;
+	border-radius: 0;
+	box-shadow: none;
+}
+
 #sub-header form, #sort-header form {
 	margin: 0;
 	padding-top: 6px;
 }
 
-#sub-header input, #sort-header input {
-	background: rgba(0, 0, 0, 0.1);
+#sub-header #input {
+	background: rgba(0, 0, 0, 0.05);
+	border-radius: 0;
+	border: 1px solid #ddd;
+	box-shadow: none;
+	width: 98%;
+}
+
+#submit {
+	background: rgb(83, 169, 63);
+	border: 1px solid #53A93F;
+	font-weight: bold;
+	color: white;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+#change-canvas-alpha, #change-canvas-textshadow {
+	font-size: 9px;
+}
+
+#third-row, #second-row {
+	clear: both;
 }
 
 .top-block-like-menu {
@@ -144,10 +220,14 @@ body {
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+	float: left;
+	padding-right: 5px;
+	margin-right: 5px;
 }
 
 .top-block-dislikes {
 	margin-right: 0px;
+	float: left;
 	padding: 6px;
 	padding-right: 0;
 	color: #666!important;
@@ -158,6 +238,18 @@ body {
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+
+.display-name-mini {
+	margin-top: -6px;
+	margin-bottom: 5px;
+	margin-left: 55px;
+}
+
+.mini-user-info {
+	margin: 0;
 }
 
 .top-block-span2 {
@@ -202,51 +294,44 @@ body {
 	font-size: 38px;
 }
 
-.post {
-	width: 500px;
-	background: rgb(255, 255, 255);
-	padding: 15px;
-	border-radius: 5px;
-	margin-left: 65px;
-	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
-	margin-bottom:10px;
-	position:relative;
-
-}
-.goodies-post{
-	position:absolute;
-	left: -2px;
-	z-index: 0;
-	opacity:0;
-	-webkit-transition: .2s opacity linear, .2s left linear;
-	cursor:pointer;
+.post-image {
+	width: 95%;
+	margin: 10px;
+	background: #eee;
+	padding: 2px 5px;
 }
 .follow-btn{
-	cursor:pointer;
-	padding: 12px;
-	background: #f0f0f0;
-	box-shadow: 1px 1px 1px lightgray;
-	line-height:0;
-	
-}
-.follow-btn-big{
-	padding:18px;
-}
-.follow-btn:hover{
+	position:absolute;
 	background:red;
+	left: -2px;
+	padding: 8px;
+	z-index: 0;
+	opacity:0;
+	-webkit-transition: .2s opacity linear;
+	cursor:pointer;
 }
-.post:hover .goodies-post{
+
+#follow-user {
+	background: rgb(219, 60, 20);
+	color: white;
+	padding: 2px;
+}
+
+.follow-btn:hover{
+	background:#f0f0f0;
+}
+.post:hover .follow-btn{
 	opacity:1;
-	left: -25px;
 }
 .post .top-block-likes, .post .top-block-dislikes {
 	font-size: 12px;
 }
 
 .post-head {
-	padding-bottom: 10px;
-	width: 200px;
+	padding: 10px;
+	width: 98%;
 	float: left;
+	border-bottom: 1px solid #eee;
 }
 
 .post-head img {
@@ -265,10 +350,12 @@ body {
 .post-head .date {
 	font-size: 10px;
 	color: #666;
+	font-weight: normal;
+	margin-left: 10px;
 }
 
-.post-like-menu {
-	float: right;
+.margin-zero {
+	margin: 0;
 }
 
 .post .post-footer {
