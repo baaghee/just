@@ -45,21 +45,22 @@ html(lang='en')
 		header#main-header.navbar.navbar-fixed-top
 			nav.navbar-inner
 				.container
-					a.brand(href='/')
-						img(src='/logos/anymeme_small.png')
-					ul.nav.pull-right#menus
-						-if(locals._user){
-							li
-								a(href='/' + locals._user.screen_name)
-									img(width='24', style='margin-right:10px', src="http://graph.facebook.com/"+locals._user.username+"/picture")
-									span=locals._user.screen_name
-							li.divider-vertical
-							li
-								a(href='/logout') logout
-						-}else{
-							li
-								a(href='/auth/facebook') Login with facebook
-						-}
+					.span10.offset1
+						a.brand(href='/')
+							img(src='/logos/anymeme_small.png')
+						ul.nav.pull-right#menus
+							-if(locals._user){
+								li
+									a(href='/' + locals._user.screen_name)
+										img(width='24', style='margin-right:10px', src="http://graph.facebook.com/"+locals._user.username+"/picture")
+										span=locals._user.screen_name
+								li.divider-vertical
+								li
+									a(href='/logout') logout
+							-}else{
+								li
+									<a href='/auth/facebook' id="fb-btn" class="btn"><i class="icon-facebook"></i>Login with Facebook</a>
+							-}
 		section#main.container
 			block content
 		include analytics

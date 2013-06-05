@@ -15,28 +15,26 @@ block content
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 	script(type='text/javascript') !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
 	div.row
-		div.span9(style='width:590px')
-			section#next-menu.row.btn-group
-				div#random-post
-					a.btn.btn-medium.btn-block(href='/random')
-						i.icon-chevron-right
+		div.span7.offset1
 			section.row
 				div.big-post
 					div.post-head
 						img(src="http://graph.facebook.com/"+pic.user.username+"/picture")
 						a(href='/' + pic.user.screen_name)=pic.user.screen_name
-						span.date(title=moment(pic.date).format('LLLL'))=moment(pic.date).fromNow()
+							span.date(title=moment(pic.date).format('LLLL'))=moment(post.date).fromNow()
+						a#follow-user.margin-zero.span1.btn.btn-small(href="#") Follow
 						br.clear
-					include like
-					img(src=cdn_pic)
+					img.span7.post-image(src=cdn_pic)
 					div.post-footer
-						-if(locals._user)
-							div.pull-left.btn-group
+						div#display-likes-box.pull-left
+							include like
+						-if(locals._user)			
+							span.top-block-likes
+								strong #{pic.views}
 								a.btn.btn-small.make-favorite(data-id=pic._id)
 									i.icon-star
-								a.btn.btn-small
-									strong #{pic.views} views
 						div.pull-right(style='margin-right:15px')
 							div.span1
 								div.fb-like(data-send="false", data-layout="button_count", data-width="450", data-show-faces="true", data-font="segoe ui")
@@ -46,9 +44,10 @@ block content
 								a(href="//pinterest.com/pin/create/button/?url="+encodeURIComponent(_url)+"&media="+encodeURIComponent(cdn_pic)+"&description="+pic.user.screen_name+"%20on%20Anymeme", data-pin-do="buttonPin", data-pin-config="beside")
 									img(src="//assets.pinterest.com/images/pidgets/pin_it_button.png")
 						br.clear
-					div
-						h4 Comments
-						fb:comments(width="580", num_posts="10", data-href=_url)					
+					div.row
+						div#fb-comment-container.span7
+							h4 Comments
+							fb:comments(num_posts="10", data-href=_url)					
 					//
 						section.comments
 							section.comment.row
