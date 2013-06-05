@@ -25,9 +25,54 @@ body {
 #main-header .navbar-inner {
 	padding: 0px;
 	font-family: 'Roboto Condensed', sans-serif;
+	background: rgba(240, 240, 240, .8);
+	box-shadow: none;
+	border-bottom: 1px solid #ddd;
 }
+
+#main-header .span10 {
+	margin-left: 8.5%;
+}
+
 #menus{
 	margin-top:9px;	
+}
+
+#profile-head {
+	box-shadow: none;
+	border-radius: 0;
+	margin: 0;
+	width: 95%;
+	margin-bottom: 15px;
+}
+
+#profile-head img {
+	float: left;
+	margin: 15px;
+	margin-top: 0;
+	margin-left: 0;
+}
+
+.clear-left {
+	clear: left;
+}
+
+#fb-btn {
+	color: white!important;
+	text-shadow: none;
+	background: rgb(59, 89, 152);
+	border: 1px solid rgb(53, 79, 132);
+	padding: 5px 20px;
+	padding-left: 5px;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+#fb-btn i {
+	padding: 9px 7px;
+	padding-right: 11px;
+	margin-right: 10px;
+	border-right: 1px solid rgb(53, 79, 132);
 }
 
 #main-header .brand, #main-header .brand:visited {
@@ -201,7 +246,11 @@ body {
 
 .top-block-like-menu {
 	font-size: 9px;
-	margin-top: 10px;
+	margin-top: 5px;
+}
+
+#display-likes-box {
+	margin-left: 10px;
 }
 
 .top-block-like-menu .btn {
@@ -209,37 +258,45 @@ body {
 }
 
 .top-block-likes {
+	text-align: center;
+	color: #53A93F!important;
 	margin-right: 0px;
 	padding: 6px;
 	padding-right: 0;
 	color: #666!important;
-	-webkit-box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, .05);
 	background: rgba(0, 0, 0, .05);
 	color: white;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
 	float: left;
 	padding-right: 5px;
 	margin-right: 5px;
+	border: 1px solid #eee;
+}
+
+.top-block-likes strong, .top-block-dislikes strong {
+	color: #53A93F!important;
+	display: block;
+}
+
+#fb-comment-container {
+	margin-left: 6%;
+}
+
+.top-block-likes i, .top-block-dislikes i {
+	color: rgb(219, 60, 20)!important;
 }
 
 .top-block-dislikes {
 	margin-right: 0px;
 	float: left;
+	text-align: center;
 	padding: 6px;
 	padding-right: 0;
 	color: #666!important;
 	background: rgba(0, 0, 0, .05);
-	-webkit-box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, .05);
 	color: white;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
 	padding-right: 5px;
 	margin-right: 5px;
+	border: 1px solid #eee;
 }
 
 .display-name-mini {
@@ -250,6 +307,11 @@ body {
 
 .mini-user-info {
 	margin: 0;
+}
+
+.mini-user-info a {
+	color: rgb(66, 127, 237)!important;
+	text-decoration: none;
 }
 
 .top-block-span2 {
@@ -301,6 +363,7 @@ body {
 	padding: 2px 5px;
 }
 .follow-btn{
+	color: white;
 	position:absolute;
 	background:red;
 	left: -2px;
@@ -312,9 +375,17 @@ body {
 }
 
 #follow-user {
+	color: white!important;
 	background: rgb(219, 60, 20);
 	color: white;
 	padding: 2px;
+}
+
+#follow-user-large {
+	color: white!important;
+	background: rgb(66, 127, 237);
+	color: white;
+	padding: 10px;
 }
 
 .follow-btn:hover{
@@ -344,7 +415,7 @@ body {
 	font-size: 12px;
 	font-weight: bold;
 	display: block;
-	color: #DB3C14;
+	color: rgb(66, 127, 237)!important;
 }
 
 .post-head .date {
@@ -365,10 +436,8 @@ body {
 .big-post {
 	background: rgba(255, 255, 255, .8);
 	padding: 15px;
-	border-radius: 5px;
 	margin-left: auto;
-	margin-top: 40px;
-	box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+	margin-top: -20px;
 }
 
 .big-post .top-block-likes, .post .top-block-dislikes {
@@ -468,4 +537,13 @@ body {
 
 #comment-input {
 	padding-bottom: 10px;
+}
+
+.top-posts-list img {
+	float: left;
+}
+
+.top-block-span2 {
+	float: left;
+	width: 50px;
 }

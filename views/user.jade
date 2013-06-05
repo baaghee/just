@@ -2,8 +2,8 @@ extends layout
 
 block content
 	.row
-		.span8
-			section.well.row(style='width: 490px;margin: 20px 45px;')
+		.span7.offset1
+			section#profile-head.well.row.span7
 				img(src="http://graph.facebook.com/"+user.username+"/picture")
 				h4=user.screen_name
 				-if(locals._user && locals._user._id.toString() == user._id.toString())
@@ -13,8 +13,8 @@ block content
 				-else
 					p
 						a(href=user.website)=user.website
-				div.btn-group
-					a.btn.btn-medium
+				div.btn-af.clear-left
+					group.btn.btn-medium
 						div Posts
 						strong=posts
 					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
@@ -28,6 +28,7 @@ block content
 					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
 						div Follows you
 						strong no
+					a#follow-user-large.pull-right.margin-zero.span1.btn.btn-small(href="#") Follow
 			section.row#post-listing
 				-each post in latest
 					-if(locals._user && post.user._id.toString() == locals._user._id.toString())
