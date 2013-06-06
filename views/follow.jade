@@ -1,0 +1,6 @@
+-if(post.me == false)
+	-if(!post.following || post.following == false)
+		a#follow-user.margin-zero.span1.btn.btn-small.follow-btn(data-id=post.user._id) Follow
+	-else
+		a#follow-user.margin-zero.span1.btn.btn-small.unfollow-btn(data-id=post.user._id) Unfollow
+

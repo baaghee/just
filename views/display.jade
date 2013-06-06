@@ -24,7 +24,7 @@ block content
 						img(src="http://graph.facebook.com/"+pic.user.username+"/picture")
 						a(href='/' + pic.user.screen_name)=pic.user.screen_name
 							span.date(title=moment(pic.date).format('LLLL'))=moment(post.date).fromNow()
-						a#follow-user.margin-zero.span1.btn.btn-small(href="#") Follow
+						include follow
 						br.clear
 					img.span7.post-image(src=cdn_pic)
 					div.post-footer
@@ -48,29 +48,6 @@ block content
 						div#fb-comment-container.span7
 							h4 Comments
 							fb:comments(num_posts="10", data-href=_url)					
-					//
-						section.comments
-							section.comment.row
-								div.span1
-									img(src='http://graph.facebook.com/iulogy/picture')
-									span iulogy
-								div.span5
-									p The function does not return any value, but modifies the content of the array pointed by base reordering its elements as defined by compar.
-					//	
-						#disqus_thread
-							script(type='text/javascript')
-									var disqus_shortname = 'anymeme'; // required: replace example with your forum shortname
-									(function() {
-									var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-									dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-									(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-									})();
-							noscript
-								| Please enable JavaScript to view the
-								a(href='http://disqus.com/?ref_noscript') comments powered by Disqus.
-							a.dsq-brlink(href='http://disqus.com')
-								| comments powered by
-								span.logo-disqus Disqus
 		div.span2
 			include ad
 	script(src='//assets.pinterest.com/js/pinit.js')

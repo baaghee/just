@@ -5,10 +5,7 @@
 			img.float-left(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
 			a.display-name-mini(href='/' + post.user.screen_name)=post.user.screen_name
 				span.date(title=moment(post.date).format('LLLL'))=moment(post.date).fromNow()
-			-if(!post.following || post.following == false)
-				a#follow-user.margin-zero.span1.btn.btn-small.follow-btn(data-id=post.user._id) Follow
-			-else
-				a#follow-user.margin-zero.span1.btn.btn-small.unfollow-btn(data-id=post.user._id) Unfollow
+			include ../follow
 			br.clear
 		include ../like
 	a(href='/' + post.user.screen_name + '/' + post._id)
