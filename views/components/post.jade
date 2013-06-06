@@ -1,15 +1,14 @@
 .span7(data-id=post._id)
 	-var _url = 'http://anyme.me/' + post.user.username + '/' + post._id;
-	-console.log(post);
-	-if(!post.following || post.following == false)
-		div.follow-btn(data-id=post.user._id)
-			i.icon-plus
 	.post-head
 		.pull-left.span3.mini-user-info
 			img.float-left(src="http://graph.facebook.com/"+post.user.username+"/picture", width="500", height="414")
 			a.display-name-mini(href='/' + post.user.screen_name)=post.user.screen_name
 				span.date(title=moment(post.date).format('LLLL'))=moment(post.date).fromNow()
-			a#follow-user.margin-zero.span1.btn.btn-small(href="#") Follow
+			-if(!post.following || post.following == false)
+				a#follow-user.margin-zero.span1.btn.btn-small.follow-btn(data-id=post.user._id) Follow
+			-else
+				a#follow-user.margin-zero.span1.btn.btn-small.unfollow-btn(data-id=post.user._id) Unfollow
 			br.clear
 		include ../like
 	a(href='/' + post.user.screen_name + '/' + post._id)

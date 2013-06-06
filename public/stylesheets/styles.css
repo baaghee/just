@@ -362,17 +362,6 @@ body {
 	background: #eee;
 	padding: 2px 5px;
 }
-.follow-btn{
-	color: white;
-	position:absolute;
-	background:red;
-	left: -2px;
-	padding: 8px;
-	z-index: 0;
-	opacity:0;
-	-webkit-transition: .2s opacity linear;
-	cursor:pointer;
-}
 
 #follow-user {
 	color: white!important;
@@ -547,3 +536,7 @@ body {
 	float: left;
 	width: 50px;
 }
+.unfollow-btn{
+	background:rgb(224, 224, 224) !important;
+}
+

@@ -316,8 +316,20 @@ $(function(){
     });
     $("body").on('click',".follow-btn", function(){
     	var id = $(this).data().id.replace(/\"/g,'');
+    	var self = $(this);
     	$.post("/follow",{user:id}, function(res){
-    		console.log(res);
+    		if(!res.error){
+    			self.removeClass("follow-btn").addClass("unfollow-btn").text("Unfollow");
+    		}
+    	});
+    });
+    $("body").on('click',".unfollow-btn", function(){
+    	var id = $(this).data().id.replace(/\"/g,'');
+    	var self = $(this);
+    	$.post("/unfollow",{user:id}, function(res){
+    		if(!res.error){
+    			self.removeClass("unfollow-btn").addClass("follow-btn").text("Follow");
+    		}
     	});
     });
 	window.fbAsyncInit = function() {

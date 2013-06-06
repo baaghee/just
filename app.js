@@ -48,6 +48,7 @@ var reserved = {
 	"featured":1,
 	"popular":1,
 	"i":1,
+	"about":1,
 	"latest":1,
 	"user":1,
 	"logout":1,
