@@ -13,7 +13,7 @@ block content
 				nav.navbar-inner
 					.container
 						ul.nav#homepage_nav
-							-var type = typeof type == 'undefined' ? '' : type;
+							-var type = (typeof display_type == 'undefined' ? '' : display_type);
 							li(class=(type == 'latest' ? "active":""))#davis_latest
 								a(href='/') LATEST
 							-if(locals._user)

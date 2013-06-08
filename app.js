@@ -451,7 +451,7 @@ app.get('/featured', function(req,res){
 				Pic.popular(fn);
 			}
 		}, function(err, docs){
-			docs.type = 'featured';
+			docs.display_type = 'featured';
 			res.render('index',docs);
 		});
 	}else{
