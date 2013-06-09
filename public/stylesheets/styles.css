@@ -57,23 +57,6 @@ body {
 	clear: left;
 }
 
-#fb-btn {
-	color: white!important;
-	text-shadow: none;
-	background: rgb(59, 89, 152);
-	border: 1px solid rgb(53, 79, 132);
-	padding: 5px 20px;
-	padding-left: 5px;
-	font-size: 11px;
-	font-weight: bold;
-}
-
-#fb-btn i {
-	padding: 9px 7px;
-	padding-right: 11px;
-	margin-right: 10px;
-	border-right: 1px solid rgb(53, 79, 132);
-}
 
 #main-header .brand, #main-header .brand:visited {
 	color: #DB3C14;
@@ -227,7 +210,7 @@ body {
 	width: 98%;
 }
 
-#submit {
+.green,.green:hover {
 	background: rgb(83, 169, 63);
 	border: 1px solid #53A93F;
 	font-weight: bold;
@@ -538,5 +521,22 @@ body {
 }
 .unfollow-btn{
 	background:rgb(224, 224, 224) !important;
+}
+.fb-btn {
+	color: white !important;
+	text-shadow: none !important;
+	background: rgb(59, 89, 152) !important;
+	border: 1px solid rgb(53, 79, 132) !important;
+	padding: 5px 20px !important;
+	padding-left: 5px !important;
+	font-size: 11px !important;
+	font-weight: bold !important;
+}
+
+.fb-btn i {
+	padding: 9px 7px;
+	padding-right: 11px;
+	margin-right: 10px;
+	border-right: 1px solid rgb(53, 79, 132);
 }
 

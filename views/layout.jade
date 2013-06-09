@@ -59,7 +59,9 @@ html(lang='en')
 									a(href='/logout') logout
 							-}else{
 								li
-									<a href='/auth/facebook' id="fb-btn" class="btn"><i class="icon-facebook"></i>Login with Facebook</a>
+									a(href='/auth/facebook').btn.fb-btn
+										i.icon-facebook
+										| Login with Facebook
 							-}
 		section#main.container
 			block content

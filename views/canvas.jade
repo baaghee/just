@@ -1,3 +1,6 @@
+//modals
+-if(!locals._user)
+	include modals/login
 header#sub-header.navbar
 	nav.navbar-inner
 		.container
@@ -134,7 +137,10 @@ header#sub-header.navbar
 						#third-row
 							#post-btn.pull-right
 								a.btn#clear Clear
-								a.btn#submit Post
+								-if(!locals._user)
+									a.btn.green(a href="#login_modal", role="button", data-toggle="modal") Post
+								-else
+									a.btn#submit.green Post
 
 							section
 								p.menu-headings Share:
