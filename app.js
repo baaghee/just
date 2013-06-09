@@ -217,7 +217,7 @@ app.get('/', function(req,res){
 				Pic.popular(fn);
 			}
 		}, function(err, docs){
-			docs.type = 'latest';
+			docs.display_type = 'latest';
 			res.render('index',docs);
 		});
 	}else{
@@ -422,7 +422,7 @@ app.get('/following', Authenticate, function(req, res){
 					Pic.popular(fn);
 				}
 			}, function(err, docs){
-				docs.type = 'following';
+				docs.display_type = 'following';
 				res.render('index',docs);
 			});
 		}else{

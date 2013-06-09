@@ -14,6 +14,7 @@ block content
 					.container
 						ul.nav#homepage_nav
 							-var type = (typeof display_type == 'undefined' ? '' : display_type);
+							-console.log(display_type);
 							li(class=(type == 'latest' ? "active":""))#davis_latest
 								a(href='/') LATEST
 							-if(locals._user)
