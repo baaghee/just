@@ -20,15 +20,19 @@ block content
 					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
 						div Favorites
 						strong=favorites
-					-var following_text, following_class;
-					-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
-					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
-						div Following
-						strong=following_text
-					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
-						div Follows you
-						strong no
-					a#follow-user-large.pull-right.margin-zero.span1.btn.btn-small(href="#") Follow
+					-if(locals._user && locals._user._id.toString() != user._id.toString())
+						-var following_text, following_class;
+						-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
+						a.btn.btn-medium
+							div Following
+							strong=following_text
+						a.btn.btn-medium
+							div Follows you
+							strong no
+						-if(following > 0)
+							a#follow-user-large.pull-right.margin-zero.span1.btn.btn-small.unfollow-btn(data-id=user._id.toString()) Unfollow
+						-else
+							a#follow-user-large.pull-right.margin-zero.span1.btn.btn-small.follow-btn(data-id=user._id.toString()) Follow
 			section.row#post-listing
 				-each post in latest
 					-if(locals._user && post.user._id.toString() == locals._user._id.toString())

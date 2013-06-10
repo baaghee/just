@@ -302,6 +302,9 @@ $(function(){
     $("body").on('click', ".remove-post", function(){
     	var id = $(this).data().id.replace(/\"/g, '');
     	var self = $(this);
+    	if(!confirm("Are you sure you want to remove this post?")){
+    		return;
+    	}
     	$.post('/remove-post', {id:id}, function(res){
     		if(res.error){
     			return alert(res.error);
@@ -311,7 +314,7 @@ $(function(){
     			window.location = window.location.origin + "/" + res.user;
     			return;
     		}
-    		self.parent().parent().slideUp();
+    		self.parent().parent().parent().slideUp();
     	});
     });
     $("body").on('click',".follow-btn", function(){
@@ -319,7 +322,7 @@ $(function(){
     	var self = $(this);
     	$.post("/follow",{user:id}, function(res){
     		if(!res.error){
-    			self.removeClass("follow-btn").addClass("unfollow-btn").text("Unfollow");
+    			$(".follow-btn[data-id='"+id+"']").removeClass("follow-btn").addClass("unfollow-btn").text("Unfollow");
     		}
     	});
     });
@@ -328,7 +331,7 @@ $(function(){
     	var self = $(this);
     	$.post("/unfollow",{user:id}, function(res){
     		if(!res.error){
-    			self.removeClass("unfollow-btn").addClass("follow-btn").text("Follow");
+    			$(".follow-btn[data-id='"+id+"']").removeClass("unfollow-btn").addClass("follow-btn").text("Follow");
     		}
     	});
     });
