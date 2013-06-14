@@ -1,7 +1,9 @@
 body {
 	
 }
-
+small {
+	color:#c0c0c0;
+}
 .btn-group > .btn:first-child {
 	border-radius: 0;
 }

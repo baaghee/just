@@ -39,15 +39,17 @@ block content
 							div.span1
 								div.fb-like(data-send="false", data-layout="button_count", data-width="450", data-show-faces="true", data-font="segoe ui")
 							div.span1
-								a.twitter-share-button(href="https://twitter.com/share", data-via="anymeme") Tweet
+								a.twitter-share-button(href="https://twitter.com/share", data-via="anymemeOFFICIAL") Tweet
 							div.span1
 								a(href="//pinterest.com/pin/create/button/?url="+encodeURIComponent(_url)+"&media="+encodeURIComponent(cdn_pic)+"&description="+pic.user.screen_name+"%20on%20Anymeme", data-pin-do="buttonPin", data-pin-config="beside")
 									img(src="//assets.pinterest.com/images/pidgets/pin_it_button.png")
 						br.clear
 					div.row
+					include ad-top
 						div#fb-comment-container.span7
 							h4 Comments
-							fb:comments(num_posts="10", data-href=_url)					
+							fb:comments(num_posts="10", data-href=_url)		
+					include ad-below			
 		div.span2
 			include ad
 	script(src='//assets.pinterest.com/js/pinit.js')

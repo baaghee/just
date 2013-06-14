@@ -2,7 +2,7 @@ doctype 5
 html(lang='en')
 	head
 		meta(charset='utf-8')
-		-_title = typeof title == 'undefined' ? 'MOAR FUN!' : title;
+		-_title = typeof title == 'undefined' ? 'anyone can meme!' : title;
 		title=_title
 		-if(typeof prerender != 'undefined')
 			link(rel="prefetch", href=prerender)
@@ -66,3 +66,4 @@ html(lang='en')
 		section#main.container
 			block content
 		include analytics
+		script(src="http://pagead2.googlesyndication.com/pagead/show_ads.js")

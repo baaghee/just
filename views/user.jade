@@ -7,7 +7,13 @@ block content
 				img(src="http://graph.facebook.com/"+user.username+"/picture")
 				h4=user.screen_name
 				-if(locals._user && locals._user._id.toString() == user._id.toString())
-					div.userwebsite.navbar-form(style='margin: 10px 3px;')
+					p
+						a#toggle-website-url(href=user.website)=user.website
+						-if(user.website == '')
+							small#toggle-website-set set your website
+						-else
+							small#toggle-website-set &nbsp;- edit
+					div.userwebsite.navbar-form(style='margin: 10px 3px;').hide#userwebsite
 						input(type='text', placeholder='Set your website', value=user.website)#website.span4
 						button(type='button').btn#set-website Update
 				-else
@@ -20,15 +26,20 @@ block content
 					a.btn.btn-medium(href='/' + user.screen_name + '/favorites')
 						div Favorites
 						strong=favorites
+					a.btn.btn-medium
+						div Followers
+						strong=user.followers
 					-if(locals._user && locals._user._id.toString() != user._id.toString())
 						-var following_text, following_class;
-						-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
-						a.btn.btn-medium
-							div Following
-							strong=following_text
-						a.btn.btn-medium
-							div Follows you
-							strong no
+						//
+							-if(following > 0) { following_text = "yes"; } else { following_text = "no"; }
+							a.btn.btn-medium
+								div Following
+								strong=following_text
+						//
+							a.btn.btn-medium
+								div Follows you
+								strong no
 						-if(following > 0)
 							a#follow-user-large.pull-right.margin-zero.span1.btn.btn-small.unfollow-btn(data-id=user._id.toString()) Unfollow
 						-else
@@ -44,12 +55,21 @@ block content
 		$(function(){
 			$("#set-website").on('click', function(){
 				var website = $("#website").val();
-				if(website == ''){
-					//todo:
-					return;
-				}
 				$.post('/user/set-website',{website:website}, function(res){
-					
+					if(res.error){
+						alert(res.error);
+					}else{
+						$("#userwebsite").hide();
+						$("#toggle-website-url").attr("src",website).text(website);
+						if(website == ""){
+							$("#toggle-website-set").html('set your website')
+						}else{
+							$("#toggle-website-set").html("&nbsp;- edit");
+						}
+					}
 				});
+			});
+			$("#toggle-website-set").click(function(){
+				$("#userwebsite").show();
 			});
 		});

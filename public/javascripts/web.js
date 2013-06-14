@@ -76,6 +76,8 @@ $(function(){
         	var dom = jade.render('post',{post:res});
         	$("#post-listing").prepend(dom);
         	$("#input").val("").html("");
+        	$("#top-input").val("").html("");
+        	$("#bot-input").val("").html("");
         	$("canvas").slideUp();
         });
     });

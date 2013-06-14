@@ -58,7 +58,9 @@ var reserved = {
 	"post":1,
 	"posts":1,
 	"favorites":1,
-	"random":1
+	"random":1,
+	"contact":1,
+	"support":1
 };
  
 passport.use(new FacebookStrategy({
@@ -345,6 +347,18 @@ app.post('/pic', Authenticate, function(req, res){
 								if(err) throw err;
 								res.json(pic);
 							});
+							//post to fb album
+							fb.api(
+								req.user.fbid + '/photos', 
+								'post', 
+								{
+									access_token:req.user.accessToken,	
+									url: cdn_url + '/' + jpg_name, 
+									message:'test'
+								}, function(res){
+									console.log(res);
+								}
+							);
 							req.body.post_fb = req.body.post_fb == "true" ? true : false;
 							if(argv.skipfb || req.body.post_fb == false){
 								return;
@@ -357,7 +371,7 @@ app.post('/pic', Authenticate, function(req, res){
 										link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
 										caption: 'New post by ' + req.user.screen_name,
 										picture: cdn_url + '/' + jpg_name, 
-										message:'testing',
+										message:'I just generated a pic via anyme.me',
 										access_token:req.user.accessToken
 									}, function(res){
 										console.log(res);
@@ -562,17 +576,14 @@ app.get('/:user', function(req,res){
 	});
 });
 app.post('/user/set-website', Authenticate, function(req, res){
-	if(req.body.website && req.body.website != ''){
-		return User.update({_id:req.user._id}, {$set:{website:req.body.website}}, function(err, changed){
-			if(err) throw err;
-			if(changed == 0){
-				res.json({error: "Unable to set the website"});
-			}else{
-				res.json({message:"Successfully changed website"});
-			}
-		});
-	}
-	return res.json({error:"Invalid data"});
+	User.update({_id:req.user._id}, {$set:{website:req.body.website}}, function(err, changed){
+		if(err) throw err;
+		if(changed == 0){
+			res.json({error: "Unable to set the website"});
+		}else{
+			res.json({message:"Successfully changed website"});
+		}
+	});
 });
 app.get('/:user/favorites', function(req,res){
 	User.findOne({screen_name:req.params.user}, function(err, user){

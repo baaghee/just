@@ -1,4 +1,5 @@
 .span4#rightSpan
+	include ad
 	-if (typeof popular == 'object')
 		.span4.top-block
 			h3 Top Posts
@@ -9,4 +10,3 @@
 							img.span2(src=cdn_url +'/medium_' + post.pic, width='260', height='216')
 						include minilike
 						br.clear
-	include ad
