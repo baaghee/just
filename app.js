@@ -144,6 +144,7 @@ app.configure(function(){
 	app.use(passport.session());
 	app.use(function(req, res, next){
 	  	res.locals._user = req.user;
+	  	res.header('Vary', 'Accept');
   		next();
 	});	
 	app.use(app.router);
@@ -354,7 +355,7 @@ app.post('/pic', Authenticate, function(req, res){
 								{
 									access_token:req.user.accessToken,	
 									url: cdn_url + '/' + jpg_name, 
-									message:'test'
+									message:''
 								}, function(res){
 									console.log(res);
 								}
