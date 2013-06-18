@@ -1,0 +1,81 @@
+extends layout
+
+block content
+	style .btn{padding:4px 12px;}
+	section.container(style='width:800px')
+		section.row
+			h1.well Administrator
+			div.span2
+				h4 Total Users
+				h1=total_users
+			div.span2
+				h4 Total Posts
+				h1=total_posts
+		hr
+		section.row
+			h4 Users
+			table.table.table-bordered
+				thead
+					tr
+						th screen name
+						th registered
+						th type
+						th action
+				tbody
+					-each user in users
+						tr
+							td
+								a(href='/iulogy')=user.screen_name
+							td=user.date
+							td=user.type
+							td
+								div.btn-group
+									button(type='button').btn Suspend
+									button(type='button').btn Feature
+									button(type='button').btn Remove
+		section.row
+			h4 Reserve
+			section
+				input(type='text', placeholder='add new reserve name, comma seperated for multiple')#reserve_list_add
+			table.table.table-bordered(style='width:400px')
+				thead
+					tr
+						th name
+						th action
+				tbody
+					-each item in reserve
+						tr
+							td=item.name
+							td
+								button(type='button').btn.reserve-release(data-id=item._id.toString()) Release
+	script
+		$(function(){
+			$("#reserve_list_add").keyup(function(e){
+				if(e.keyCode != 13){
+					return;
+				}
+				var list = $(this).val();
+				$.post('/admin/reserve',{list:list}, function(res){
+					if(res.error){
+						return alert(res.error);
+					}
+					window.location.reload(true);
+				});
+				$(this).val('');
+			});
+			$("body").on('click','.reserve-release', function(){
+				var id = $(this).data().id;
+				var self = $(this);
+				$.post('/admin/reserve/release',{id:id}, function(res){
+					if(res.error){
+						return alert(res.error);
+					}
+					self.parent().parent().slideUp();
+				});
+			});
+		});
+		
+		
+		
+		
+		

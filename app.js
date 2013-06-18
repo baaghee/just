@@ -39,6 +39,7 @@ db = mongoose.createConnection(db_path);
 
 var User = require('./lib/User');    
 var Pic = require('./lib/Pic');    
+var Reserve = require('./lib/Reserve');    
 
 var sessionStore = new MongoStore({url:db_path}); 
 
@@ -60,7 +61,10 @@ var reserved = {
 	"favorites":1,
 	"random":1,
 	"contact":1,
-	"support":1
+	"support":1,
+	"admin":1,
+	"administrator":1,
+	"moderator":1
 };
  
 passport.use(new FacebookStrategy({
@@ -74,6 +78,7 @@ passport.use(new FacebookStrategy({
 				new User({
 					fbid:profile.id
 				  , username: profile.username
+				  , date:new date()
 				  , displayName: profile.displayName
 				  , raw : profile._raw
 				  , accessToken: accessToken
@@ -103,7 +108,14 @@ passport.use(new FacebookStrategy({
 function ScreenNameExists(name, fn){
 	User.findOne({screen_name:name},{_id:1}, function(err, exists){
 		if(err) throw err;
-		fn(exists != null);
+		if(exists != null){
+			return fn(true);
+		}
+		//check reserve list
+		Reserve.count({name:name}, function(err, count){
+			if(err) throw err;
+			fn(count != 0)
+		});
 	});
 };
 function validName(name){
@@ -111,6 +123,10 @@ function validName(name){
 }
 function Authenticate(req,res,next){
   if (req.isAuthenticated()) { return next(); }
+ 	 return res.redirect('/');
+}
+function Authenticate_admin(req,res,next){
+  if (req.isAuthenticated() && req.user.type=='administrator') { return next(); }
  	 return res.redirect('/');
 }
 
@@ -235,29 +251,62 @@ app.get('/', function(req,res){
 		});
 	}
 });
-app.post('/test/', function(req, res){
-    var type = req.body.type;
-    var text = req.body.text;
-    var textColor = req.body.textColor;
-    var bgcolor;
-    var size;
-    var top;
-    var bottom;
-    if(type == '' || !type || "text image".indexOf(type) == -1){
-    	return res.json({error:'Invalid request!'});
-    }
-    if(type == 'text'){
-    	if(text == '' || !text){
-    		return res.json({error:'Invalid request!'});
-    	}
-    }
-    if(type == 'image'){
-    	if((!top || top == '') && (!bottom || bottom == '')){
-    		return  res.json({error:'Invalid request!'});
-    	}
-    }
+app.get('/admin', Authenticate_admin, function(req, res){
+	async.auto({
+		total_users:function(fn){
+			User.count({},fn);
+		},
+		total_posts:function(fn){
+			Pic.count({},fn);
+		},
+		reserve:function(fn){
+			Reserve
+			.find()
+			.lean()
+			.exec(fn);
+		},
+		users:function(fn){
+			User
+			.find()
+			.sort({_id:-1})
+			.lean()
+			.exec(fn)	
+		}
+	}, function(err, admin){
+		res.render('admin', admin);
+	});
 });
-
+app.post('/admin/reserve', Authenticate_admin, function(req, res){
+	if(!req.body.list){
+		return res.json({error: 'no list'});
+	}
+	var list = req.body.list.split(",");
+	list = _.map(list, function(name){
+		if(validName(name) == false){
+			return null;
+		}
+		return {
+			date:new Date(),
+			name:name,
+			user:req.user._id
+		}
+	});
+	list = _.compact(list);
+	Reserve.create(list, function(err){
+		if(err) throw err;
+		return res.json({message:'created'});
+	});
+});
+app.post('/admin/reserve/release', Authenticate_admin, function(req, res){
+	if(!req.body.id){
+		return res.json({error: 'no id'});
+	}
+	var id = req.body.id;
+	Reserve.remove({_id:id}, function(err, changed){
+		if(err) throw err;
+		res.json({message:'removed'});
+	});
+});
 app.post('/pic', Authenticate, function(req, res){
 	Pic.count({user:req.user._id, date:{$gt:moment().subtract('hours',1)}}, function(err, count){
 		if(err) throw err;
@@ -534,6 +583,7 @@ app.get('/random', function(req, res){
 		var rand = Math.floor( Math.random() * count );
 		Pic
 		.findOne()
+		.lean()
 		.populate('user', "id screen_name username")
 		.skip(rand)
 		.exec(function(err, doc){
