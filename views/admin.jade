@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	style .btn{padding:4px 12px;}
+	style .btn{padding:4px 12px;} .feature.active{background:red}
 	section.container(style='width:800px')
 		section.row
 			h1.well Administrator
@@ -18,7 +18,7 @@ block content
 				thead
 					tr
 						th screen name
-						th registered
+						th fb
 						th type
 						th action
 				tbody
@@ -26,12 +26,12 @@ block content
 						tr
 							td
 								a(href='/iulogy')=user.screen_name
-							td=user.date
+							td=user.username
 							td=user.type
 							td
 								div.btn-group
 									button(type='button').btn Suspend
-									button(type='button').btn Feature
+									button(type='button', data-id=user._id.toString(), class='btn feature ' + (user.featured == true? "active":"")) Feature
 									button(type='button').btn Remove
 		section.row
 			h4 Reserve
@@ -73,6 +73,22 @@ block content
 					self.parent().parent().slideUp();
 				});
 			});
+			$("body").on('click','.feature', function(){
+				var id = $(this).data().id;
+				var self = $(this);
+				var cmd = self.hasClass("active") ? "unset" : "set";
+				$.post('/admin/feature',{id:id, cmd:cmd}, function(res){
+					if(res.error){
+						return alert(res.error);
+					}
+					if(cmd == "set"){
+						self.addClass("active");
+					}else{
+						self.removeClass("active");
+					}
+				});
+			});
+			
 		});
 		
 		

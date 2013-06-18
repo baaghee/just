@@ -307,6 +307,24 @@ app.post('/admin/reserve/release', Authenticate_admin, function(req, res){
 		res.json({message:'removed'});
 	});
 });
+app.post('/admin/feature', Authenticate_admin, function(req, res){
+	if(!req.body.cmd){
+		return res.json({error:'incomplete request'});
+	}
+	var update;
+	if(req.body.cmd == 'set'){
+		update = {$set:{featured:true}};
+	}else{
+		update = {$set:{featured:false}};
+	}
+	User.update({_id:req.body.id}, update, function(err, changed){
+		if(err) throw err;
+		if(changed == 0){
+			return res.json({error:"unable to change"});
+		}
+		res.json({message:"changed"});
+	})
+});
 app.post('/pic', Authenticate, function(req, res){
 	Pic.count({user:req.user._id, date:{$gt:moment().subtract('hours',1)}}, function(err, count){
 		if(err) throw err;
