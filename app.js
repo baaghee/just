@@ -37,9 +37,12 @@ if(!fs.existsSync("./public/files/")){
 mongoose = require('mongoose');
 db = mongoose.createConnection(db_path);
 
-var User = require('./lib/User');    
-var Pic = require('./lib/Pic');    
-var Reserve = require('./lib/Reserve');    
+User = require('./lib/User');    
+Pic = require('./lib/Pic');    
+Reserve = require('./lib/Reserve');    
+
+//
+require('./timers/feature');
 
 var sessionStore = new MongoStore({url:db_path}); 
 
@@ -48,6 +51,7 @@ var reserved = {
 	"followers":1,
 	"featured":1,
 	"popular":1,
+	"edit":1,
 	"i":1,
 	"about":1,
 	"latest":1,
@@ -222,7 +226,6 @@ app.get('*', function(req, res, next){
 		return next();
 	}
 });
-
 app.get('/', function(req,res){
 	if(!req.xhr){
 		async.auto({
@@ -324,6 +327,9 @@ app.post('/admin/feature', Authenticate_admin, function(req, res){
 		}
 		res.json({message:"changed"});
 	})
+});
+app.get('/edit', Authenticate, function(req,res){
+	res.render('edit-profile');
 });
 app.post('/pic', Authenticate, function(req, res){
 	Pic.count({user:req.user._id, date:{$gt:moment().subtract('hours',1)}}, function(err, count){
@@ -557,7 +563,7 @@ app.post('/fbcomment', function(req, res){
 	});
 	res.end();
 });
-app.post('/post/:id/approve', Authenticate, function(req, res){
+app.post('/post/:id/approve', function(req, res){
 	var id = req.params.id;
 	var type = req.body.type;
 	if(!type){
@@ -567,7 +573,13 @@ app.post('/post/:id/approve', Authenticate, function(req, res){
 		return res.json({error:"Invalid request!"});
 	}
 	//check if casted
-	Pic.findOne({_id:id, 'approvals.user':req.user._id},{_id:1}, function(err, pic){
+	var q = {_id:id};
+	if(req.isAuthenticated()){
+		q['approvals.user'] = req.user._id;	
+	}else{
+		q['approvals.ip'] = req.ip;
+	}
+	Pic.findOne(q,{_id:1}, function(err, pic){
 		if(err) throw err;
 		if(pic){
 			return res.json({error: 'Already casted'});
@@ -575,14 +587,17 @@ app.post('/post/:id/approve', Authenticate, function(req, res){
 		var update = {
 			$push:{
 				approvals:{
-					user:req.user._id, 
+					//user:req.user._id, 
 					type:type, 
 					date:new Date(), 
-					ip:'string'
+					ip:req.ip
 				}
 			},
 			$inc:{} 
 		};
+		if(req.isAuthenticated()){
+			update.$push.approvals.user = req.user._id;
+		}
 		update.$inc[type + "s"] = 1;
 		Pic.update({_id:id}, update, function(err){
 			if(err) throw err;
