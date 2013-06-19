@@ -387,8 +387,8 @@ app.post('/pic', Authenticate, function(req, res){
 						}).save(function(err, doc){
 							if(err) throw err;
 							//delete temp files
-							//fs.unlink(jpgtemppath, function(){});
-							//fs.unlink(temppath, function(){});
+							fs.unlink(jpgtemppath, function(){});
+							fs.unlink(temppath, function(){});
 							
 							Pic
 							.findOne({_id:doc._id})
