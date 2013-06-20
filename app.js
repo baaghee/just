@@ -411,8 +411,8 @@ app.post('/pic', Authenticate, function(req, res){
 						}).save(function(err, doc){
 							if(err) throw err;
 							//delete temp files
-							//fs.unlink(jpgtemppath, function(){});
-							//fs.unlink(temppath, function(){});
+							fs.unlink(jpgtemppath, function(){});
+							fs.unlink(temppath, function(){});
 							
 							Pic
 							.findOne({_id:doc._id})
@@ -422,31 +422,18 @@ app.post('/pic', Authenticate, function(req, res){
 								res.json(pic);
 							});
 							//post to fb album
-							fb.api(
-								req.user.fbid + '/photos', 
-								'post', 
-								{
-									access_token:req.user.accessToken,	
-									url: cdn_url + '/' + jpg_name, 
-									message:''
-								}, function(res){
-									console.log(res);
-								}
-							);
 							req.body.post_fb = req.body.post_fb == "true" ? true : false;
 							if(argv.skipfb || req.body.post_fb == false){
 								return;
 							}
 							if(req.body.post_fb == true){
 								fb.api(
-									'me/feed', 
-									'post',
+									req.user.fbid + '/photos', 
+									'post', 
 									{
-										link: 'http://anyme.me/' + req.user.screen_name + '/' + doc._id,
-										caption: 'New post by ' + req.user.screen_name,
-										picture: cdn_url + '/' + jpg_name, 
-										message:'I just generated a pic via anyme.me',
-										access_token:req.user.accessToken
+										access_token:req.user.accessToken,	
+										url: cdn_url + '/' + jpg_name, 
+										message:''
 									}, function(res){
 										console.log(res);
 									}
