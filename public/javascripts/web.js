@@ -64,11 +64,16 @@ $(function(){
 	});
     $("#submit").click(function(e){
         e.preventDefault();
+        var self = $(this);
         var image = $("canvas");
         var img = image.getCanvasImage('png');
         var post_fb = $("#post-to-fb").is(":checked");
         var private = $("#post-private").is(":checked");
+        var block = self.hasClass("block-btn");
+        if(block) return;
+        self.text("Posting").addClass("block-btn");
         $.post('/pic', {pic:img, post_fb:post_fb, private:private}, function(res){
+        	self.text("Post").removeClass("block-btn");
         	if(res.error){
         		alert(res.error);
         		return;
